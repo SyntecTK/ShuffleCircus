@@ -90,7 +90,7 @@ public static class ScoringSystem
         _                       => "Unknown Hand"
     };
 
-    public static int CalculateRowScore(BoardData board, int row)
+    public static int CalculateRowScore(GameBoard board, int row)
     {
         CardData[] cards = new CardData[5];
         for(int i = 0; i < 5; i++)
@@ -143,7 +143,7 @@ public static class ScoringSystem
 
     }
 
-    public static int CalculateTotalScore(BoardData board)
+    public static int CalculateTotalScore(GameBoard board)
     {
         int total = 0;
         for(int row = 0; row < 3; row++)

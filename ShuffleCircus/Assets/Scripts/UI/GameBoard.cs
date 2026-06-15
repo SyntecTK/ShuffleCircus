@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BoardData : MonoBehaviour
+public class GameBoard : MonoBehaviour
 {
     public CardData[,] grid = new CardData[3, 5];
 
