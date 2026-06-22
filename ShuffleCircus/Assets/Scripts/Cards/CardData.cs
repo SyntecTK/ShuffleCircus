@@ -10,6 +10,9 @@ public class CardData : MonoBehaviour
     public CardSuit Suit => suit;
     public CardIdentity Identity => new CardIdentity(value, suit);
 
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private CardSpriteDataBase spriteDataBase;
+
     private int GetPointValueFromRank(int rank)
     {
         if(rank >= 2 && rank <= 9) return rank;
@@ -23,10 +26,19 @@ public class CardData : MonoBehaviour
         {
             value = identity.rank;
             suit = identity.suit;
+            UpdateSprite();
         }
         else
         {
             Debug.LogError("Invalid card identity: " + identity.rank + " of " + identity.suit);
+        }
+    }
+
+    private void UpdateSprite()
+    {
+        if(spriteRenderer != null && spriteDataBase != null)
+        {
+            spriteRenderer.sprite = spriteDataBase.GetSprite(Identity);
         }
     }
 }
