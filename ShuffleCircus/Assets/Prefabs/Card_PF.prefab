@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1219212402662776040}
   - component: {fileID: 7987134947718550584}
   - component: {fileID: 2297397904437882992}
+  - component: {fileID: -642714278542169288}
   m_Layer: 5
   m_Name: Card_PF
   m_TagString: Untagged
@@ -88,3 +89,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7967d039e8e73814c837c6df276bb6ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDrag
+--- !u!114 &-642714278542169288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8732264426583041850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a7c3dfe27668c498930277d6267998, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  value: 0
+  suit: 0
+  spriteRenderer: {fileID: 0}
+  spriteDataBase: {fileID: 0}
