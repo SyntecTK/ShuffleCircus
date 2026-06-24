@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private DeckManager deckManager;
     [SerializeField] private HandDisplay handDisplay;
+    [SerializeField] private Transform cardParent;
+
+    [Header("Settings")]
     [SerializeField] private bool isPlayer = true;
     [SerializeField] private bool populateOnStart = true;
 
@@ -39,7 +43,7 @@ public class HandManager : MonoBehaviour
                 continue;
             }
 
-            RectTransform cardInstance = handDisplay.CreateCardView(transform, drawnCard, i);
+            RectTransform cardInstance = handDisplay.CreateCardView(cardParent, drawnCard, i);
             if (cardInstance == null)
             {
                 Debug.LogError("Failed to create card view.");

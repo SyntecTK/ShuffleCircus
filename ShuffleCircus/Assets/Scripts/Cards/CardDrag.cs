@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform rectTransform;
+    private Transform originalParent;
     private Image image;
     private Canvas canvas;
 
@@ -17,7 +18,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //image.raycastTarget = false;
+        originalParent = rectTransform.parent;
     }
 
     public void OnDrag(PointerEventData eventData)
