@@ -1826,6 +1826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 611494901}
   - component: {fileID: 611494902}
+  - component: {fileID: 611494903}
   m_Layer: 5
   m_Name: Hand
   m_TagString: Untagged
@@ -1867,10 +1868,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bedbb34d5ade0d4f9b8fec2c4b581d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HandManager
-  deckManager: {fileID: 0}
-  handDisplay: {fileID: 0}
+  deckManager: {fileID: 2070466156}
+  handDisplay: {fileID: 611494903}
   isPlayer: 1
+  populateOnStart: 1
   handSize: 6
+--- !u!114 &611494903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611494900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e323c3218f45c74fa5d2294b0137912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HandDisplay
+  cardPrefab: {fileID: 9213499975338931178, guid: 59ddfc8267d2f514492e268ae0a40c6f, type: 3}
+  cardSpriteDataBase: {fileID: 11400000, guid: 0183c0e36b7d8df4b804f6e825a42764, type: 2}
+  useBezierLayout: 1
+  startPoint: {fileID: 1647434010}
+  controlPoint: {fileID: 1882569141}
+  endPoint: {fileID: 708755276}
+  cardSpacing: 140
+  cardAnimDuration: 0.3
+  cardAnimDelay: 0.08
+  drawYOffset: 120
 --- !u!1 &708755275
 GameObject:
   m_ObjectHideFlags: 0
@@ -4682,6 +4706,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2009688632}
   m_CullTransparentMesh: 1
+--- !u!1 &2070466155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2070466157}
+  - component: {fileID: 2070466156}
+  m_Layer: 0
+  m_Name: DeckManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2070466156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070466155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a25320e4c580b024bb0417e283d740e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeckManager
+  playerDeck: []
+  playerDiscardPile: []
+  opponentDeck: []
+  opponentDiscardPile: []
+--- !u!4 &2070466157
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070466155}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 32.79111, y: 8.60875, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2086799232
 GameObject:
   m_ObjectHideFlags: 0
@@ -4903,3 +4975,4 @@ SceneRoots:
   - {fileID: 412932064}
   - {fileID: 96077578}
   - {fileID: 1354116643}
+  - {fileID: 2070466157}
