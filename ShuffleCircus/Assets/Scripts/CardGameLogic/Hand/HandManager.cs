@@ -80,6 +80,26 @@ public class HandManager : MonoBehaviour
         handDisplay.ArrangeCards(handCards, handSize);
     }
 
+    /// <summary>
+    /// Returns the actual CardData objects currently in hand (for AI evaluation, etc.)
+    /// </summary>
+    public List<CardData> GetHandCards()
+    {
+        List<CardData> result = new List<CardData>();
+        foreach (RectTransform cardTransform in handCards)
+        {
+            if (cardTransform != null)
+            {
+                CardData cardData = cardTransform.GetComponent<CardData>();
+                if (cardData != null)
+                {
+                    result.Add(cardData);
+                }
+            }
+        }
+        return result;
+    }
+
     public void RemoveCardFromHand(RectTransform card)
     {
         if(card == null)
@@ -90,6 +110,30 @@ public class HandManager : MonoBehaviour
         if(handCards.Remove(card))
         {
             handDisplay.ArrangeCards(handCards, handSize);
+        }
+    }
+
+    /// <summary>
+    /// CardData-based overload used by AI to remove a card from hand tracking.
+    /// Finds the matching RectTransform via its CardData component and removes it.
+    /// </summary>
+    public void RemoveCardFromHand(CardData card)
+    {
+        if (card == null) return;
+
+        RectTransform match = null;
+        foreach (RectTransform cardTransform in handCards)
+        {
+            if (cardTransform != null && cardTransform.GetComponent<CardData>() == card)
+            {
+                match = cardTransform;
+                break;
+            }
+        }
+
+        if (match != null)
+        {
+            RemoveCardFromHand(match);
         }
     }
 

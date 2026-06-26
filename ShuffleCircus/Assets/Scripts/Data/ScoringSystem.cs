@@ -97,8 +97,16 @@ public static class ScoringSystem
         {
             cards[i] = board.GetCard(row, i);
         }
-        PokerHand hand = GetPokerhand(cards);
-        int baseScore = GetHandScore(cards, hand);
+        return CalculateRowScore(cards);
+    }
+
+    /// <summary>
+    /// Array-based overload — works on a snapshot (e.g. for AI simulation) without a GameBoard instance.
+    /// </summary>
+    public static int CalculateRowScore(CardData[] rowCards)
+    {
+        PokerHand hand = GetPokerhand(rowCards);
+        int baseScore = GetHandScore(rowCards, hand);
         return baseScore * handMultipliers[hand];
     }
 

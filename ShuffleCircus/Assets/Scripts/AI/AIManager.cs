@@ -1,0 +1,337 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// AI Opponent Manager: orchestrates opponent turns with board evaluation and move selection.
+/// 
+/// Phase 1: Turn orchestration & Reentrancy safety
+/// Phases 2-4: Hooks for move generation, evaluation, and execution (implemented in later steps)
+/// </summary>
+public class AIManager : MonoBehaviour
+{
+    // === INSPECTOR CONFIG ===
+    [SerializeField] private float thinkDelaySeconds = 0.5f;
+    [SerializeField] private float cardPlayDelaySeconds = 0.3f;
+    
+    // === REFERENCES (cached at Start) ===
+    private GameplayManager gameplayManager;
+    private HandManager handManager;
+    private GameBoard playerBoard;
+    private GameBoard opponentBoard;
+    
+    // === STATE ===
+    private bool isAIThinking = false;  // Reentrancy guard: prevent overlapping AI turns
+    
+    // === LIFECYCLE ===
+    private void OnEnable()
+    {
+        EventManager.OnTurnEnded += HandleAITurnTriggered;
+    }
+    
+    private void OnDisable()
+    {
+        EventManager.OnTurnEnded -= HandleAITurnTriggered;
+        isAIThinking = false;  // Safety cleanup on disable
+    }
+    
+    private void Start()
+    {
+        CacheReferences();
+    }
+    
+    private void OnDestroy()
+    {
+        // Ensure cleanup if scene changes or object destroyed mid-turn
+        isAIThinking = false;
+    }
+    
+    // === MAIN ENTRY POINT ===
+    /// <summary>
+    /// Called when EventManager.OnTurnEnded fires.
+    /// Only acts if it's opponent's turn AND not already thinking.
+    /// </summary>
+    private void HandleAITurnTriggered()
+    {
+        // Only execute if it's the opponent's turn and we're not already thinking
+        if (GameManager.Instance.IsPlayerTurn || isAIThinking)
+        {
+            return;
+        }
+        
+        StartCoroutine(AIThinkAndPlayCoroutine());
+    }
+    
+    // === ORCHESTRATION: Think & Play Loop ===
+    private IEnumerator AIThinkAndPlayCoroutine()
+    {
+        isAIThinking = true;
+        
+        try
+        {
+            // Brief thinking delay for UX
+            yield return new WaitForSeconds(thinkDelaySeconds);
+            
+            // Play up to 4 cards this turn
+            while (GameManager.Instance.CanPlayCardThisTurn() && isActiveAndEnabled)
+            {
+                // Step 5: Get legal moves for current board state
+                List<AIMove> legalMoves = GetLegalMoves();
+                
+                if (legalMoves.Count == 0)
+                {
+                    Debug.Log("AI: No legal moves remaining this turn.");
+                    break;
+                }
+                
+                // Step 7-8: Evaluate and pick best move
+                AIMove bestMove = EvaluateAndPickBest(legalMoves);
+                
+                Debug.Log($"AI: Playing move {bestMove}");
+                
+                // Step 11-12: Execute the move
+                ExecuteMove(bestMove);
+                
+                // Pacing delay between card plays for visual clarity
+                yield return new WaitForSeconds(cardPlayDelaySeconds);
+            }
+            
+            // Brief pause before ending turn
+            yield return new WaitForSeconds(0.3f);
+            
+            if (isActiveAndEnabled)
+            {
+                Debug.Log("AI: Ending turn.");
+                GameManager.Instance.EndTurn();
+            }
+        }
+        finally
+        {
+            isAIThinking = false;
+        }
+    }
+    
+    // === PHASE 2: Get Legal Moves ===
+    /// <summary>
+    /// Returns all legal (card, slot) tuples the AI can play this turn.
+    /// 
+    /// Factors:
+    /// - AI hand cards (from HandManager.GetHandCards())
+    /// - Available opponent board slots (non-null, within bounds)
+    /// - Board constraint: each slot must be unoccupied
+    /// 
+    /// Grid layout: 3 rows × 5 columns
+    /// </summary>
+    private List<AIMove> GetLegalMoves()
+    {
+        List<AIMove> legalMoves = new List<AIMove>();
+        
+        // Get AI's current hand
+        List<CardData> aiHand = handManager.GetHandCards();
+        
+        if (aiHand == null || aiHand.Count == 0)
+        {
+            Debug.Log("AI: No cards in hand.");
+            return legalMoves;
+        }
+        
+        int rows = opponentBoard.grid.GetLength(0);     // 3
+        int columns = opponentBoard.grid.GetLength(1);  // 5
+        
+        // For each card in the AI's hand
+        foreach (CardData card in aiHand)
+        {
+            if (card == null) continue;
+            
+            // For each slot on the opponent board
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < columns; col++)
+                {
+                    // Check if slot is empty (legal placement)
+                    if (opponentBoard.GetCard(row, col) == null)
+                    {
+                        legalMoves.Add(new AIMove(row, col, card));
+                    }
+                }
+            }
+        }
+        
+        Debug.Log($"AI: Found {legalMoves.Count} legal moves ({aiHand.Count} cards × empty slots)");
+        
+        return legalMoves;
+    }
+    
+    // === PHASE 3: Evaluate & Pick Best ===
+    /// <summary>
+    /// Evaluates each candidate move and returns the best one.
+    /// 
+    /// Greedy strategy (v1):
+    /// - For each move, simulate placing card at (row, col)
+    /// - Net score = own row gain + opponent row loss from steal (same row, same rank)
+    /// - Pick move with highest net score; random tie-breaking.
+    /// </summary>
+    private AIMove EvaluateAndPickBest(List<AIMove> candidates)
+    {
+        List<AIMove> bestMoves = new List<AIMove>();
+        int bestScore = int.MinValue;
+        
+        foreach (AIMove candidate in candidates)
+        {
+            int score = SimulateMove(candidate);
+            
+            AIMove scoredMove = candidate;
+            scoredMove.evaluationScore = score;
+            
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestMoves.Clear();
+                bestMoves.Add(scoredMove);
+            }
+            else if (score == bestScore)
+            {
+                bestMoves.Add(scoredMove);
+            }
+        }
+        
+        // Random tie-breaking among equally scored moves
+        AIMove chosen = bestMoves[UnityEngine.Random.Range(0, bestMoves.Count)];
+        Debug.Log($"AI: Best move score={bestScore}, chose {chosen}");
+        return chosen;
+    }
+    
+    /// <summary>
+    /// Simulates a move on snapshots of the board (no real board state is modified).
+    /// Returns net score: own row gain + opponent row loss via steal.
+    /// </summary>
+    private int SimulateMove(AIMove move)
+    {
+        int row = move.row;
+        int rank = move.card.RankValue;
+        
+        // --- Own board: score gain from placing the card ---
+        CardData[] aiRow = GetRowSnapshot(opponentBoard, row);
+        int aiScoreBefore = ScoringSystem.CalculateRowScore(aiRow);
+        aiRow[move.col] = move.card;  // simulate placement (only on the copy)
+        int aiScoreAfter = ScoringSystem.CalculateRowScore(aiRow);
+        int ownGain = aiScoreAfter - aiScoreBefore;
+        
+        // --- Opponent board: score loss from steal (same row, same rank) ---
+        CardData[] playerRow = GetRowSnapshot(playerBoard, row);
+        int playerScoreBefore = ScoringSystem.CalculateRowScore(playerRow);
+        
+        for (int col = 0; col < playerRow.Length; col++)
+        {
+            if (playerRow[col] != null && playerRow[col].RankValue == rank)
+            {
+                playerRow[col] = null;  // simulate steal
+            }
+        }
+        
+        int playerScoreAfter = ScoringSystem.CalculateRowScore(playerRow);
+        int opponentLoss = playerScoreBefore - playerScoreAfter;  // positive = opponent lost score
+        
+        return ownGain + opponentLoss;
+    }
+    
+    /// <summary>
+    /// Returns a shallow copy of the given board row as a CardData array.
+    /// Safe to modify without affecting the real board.
+    /// </summary>
+    private CardData[] GetRowSnapshot(GameBoard board, int row)
+    {
+        int columns = board.grid.GetLength(1);
+        CardData[] snapshot = new CardData[columns];
+        for (int col = 0; col < columns; col++)
+        {
+            snapshot[col] = board.GetCard(row, col);
+        }
+        return snapshot;
+    }
+    
+    // === PHASE 4: Execute Move ===
+    /// <summary>
+    /// Executes a move on the opponent board:
+    /// 1. Places card on board grid at (row, col)
+    /// 2. Registers the play with GameManager (increments cardsPlayedThisTurn)
+    /// 3. Fires CardDropped event to trigger steal logic
+    /// 4. Updates hand tracking
+    /// 5. Triggers UI refresh (BoardChanged event)
+    /// 
+    /// Implemented in Step 11-12.
+    /// </summary>
+    private void ExecuteMove(AIMove move)
+    {
+        if (move.card == null)
+        {
+            Debug.LogError("AI: ExecuteMove called with null card.");
+            return;
+        }
+        
+        // 1. Get the target CardSlot so we can reparent the card visually
+        CardSlot targetSlot = opponentBoard.GetSlot(move.row, move.col);
+        if (targetSlot == null)
+        {
+            Debug.LogError($"AI: No CardSlot found at ({move.row}, {move.col})");
+            return;
+        }
+        
+        // 2. Remove from hand list BEFORE reparenting so turn-end cleanup ignores it
+        handManager.RemoveCardFromHand(move.card);
+        
+        // 3. Reparent card to the slot (mirrors what OnDrop does)
+        move.card.transform.SetParent(targetSlot.transform);
+        move.card.transform.localPosition = Vector3.zero;
+        move.card.transform.localRotation = Quaternion.identity;
+        move.card.transform.localScale = Vector3.one;
+        
+        // 4. Update the logical board grid
+        opponentBoard.PlaceCard(move.row, move.col, move.card);
+        
+        // 5. Register the play (increments cardsPlayedThisTurn)
+        bool registered = GameManager.Instance.TryRegisterPlayedCard();
+        if (!registered)
+        {
+            Debug.LogWarning("AI: Failed to register card play (over 4-card limit?)");
+            return;
+        }
+        
+        // 6. Fire event to trigger steal logic via GameplayManager
+        EventManager.CardDropped(move.row, move.col, false);  // false = opponent played
+        
+        // 7. Trigger UI refresh (scores, deck/discard counts)
+        EventManager.BoardChanged();
+        
+        Debug.Log($"AI: Move executed at ({move.row}, {move.col})");
+    }
+    
+    // === REFERENCE CACHING ===
+    private void CacheReferences()
+    {
+        gameplayManager = FindFirstObjectByType<GameplayManager>();
+        if (gameplayManager == null)
+        {
+            Debug.LogError("AIManager: GameplayManager not found in scene.");
+            return;
+        }
+        
+        handManager = FindFirstObjectByType<HandManager>();
+        if (handManager == null)
+        {
+            Debug.LogError("AIManager: HandManager not found in scene.");
+            return;
+        }
+        
+        playerBoard = gameplayManager.GetPlayerBoard();
+        opponentBoard = gameplayManager.GetEnemyBoard();
+        
+        if (playerBoard == null || opponentBoard == null)
+        {
+            Debug.LogError("AIManager: Could not cache player/opponent boards from GameplayManager.");
+            return;
+        }
+        
+        Debug.Log("AIManager: References cached successfully.");
+    }
+}

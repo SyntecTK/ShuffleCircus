@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameBoard : MonoBehaviour
 {
     public CardData[,] grid = new CardData[3, 5];
+    private CardSlot[,] slotGrid = new CardSlot[3, 5];
     [SerializeField] private bool isPlayerBoard;
     public bool IsPlayerBoard => isPlayerBoard;
 
@@ -34,12 +35,18 @@ public class GameBoard : MonoBehaviour
 
             slots[index].SetCoordinates(row, column);
             slots[index].SetPlayerSlot(isPlayerBoard);
+            slotGrid[row, column] = slots[index];
         }
     }
 
     public void PlaceCard(int row, int column, CardData card)
     {
         grid[row, column] = card;
+    }
+
+    public CardSlot GetSlot(int row, int column)
+    {
+        return slotGrid[row, column];
     }
 
     public CardData GetCard(int row, int column)

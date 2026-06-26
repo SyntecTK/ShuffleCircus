@@ -63,4 +63,14 @@ public class GameplayManager : MonoBehaviour
             Destroy(targetCard.gameObject);
         }
     }
+
+    public GameBoard GetPlayerBoard()
+    {
+        return _playerBoard;
+    }
+
+    public GameBoard GetEnemyBoard()
+    {
+        return _enemyBoard;
+    }
 }
