@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-public class DeckManager : MonoBehaviour
+public class DeckManager : Singleton<DeckManager>
 {
     [SerializeField] private List<CardIdentity> playerDeck = new List<CardIdentity>();
     [SerializeField] private List<CardIdentity> playerDiscardPile = new List<CardIdentity>();
@@ -100,6 +100,16 @@ public class DeckManager : MonoBehaviour
         drawDeck.AddRange(discard);
         ShuffleDeck(drawDeck);
         discard.Clear();
+    }
+
+    public int GetDeckCount(bool isPlayer)
+    {
+        return isPlayer ? playerDeck.Count : opponentDeck.Count;
+    }
+
+    public int GetDiscardCount(bool isPlayer)
+    {
+        return isPlayer ? playerDiscardPile.Count : opponentDiscardPile.Count;
     }
 
 

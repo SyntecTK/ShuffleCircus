@@ -1,24 +1,9 @@
 using System.Collections;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class SceneLoader : Singleton<SceneLoader>
 {
-    public static SceneLoader Instance { get; private set; }
-
     private bool isLoading = false;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     public void LoadScene(string sceneName)
     {
