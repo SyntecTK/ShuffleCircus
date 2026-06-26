@@ -25,35 +25,39 @@ public class GameplayManager : MonoBehaviour
         GameBoard board = playedByPlayer ? _playerBoard : _enemyBoard;
         CardData card = board.GetCard(row, column);
 
-        if(card == null)
+        if (card == null)
         {
             Debug.LogWarning("GameplayManager: No card found in the specified slot.");
             return;
         }
 
         StealMatchingRankInRow(row, card.RankValue, playedByPlayer);
+        if (board.IsFull())
+        {
+            SceneLoader.Instance.UnloadAdditiveScene("GameBoard");
+        }
     }
 
     public void StealMatchingRankInRow(int row, int rank, bool playedByPlayer)
     {
-        if(DeckManager.Instance == null)
+        if (DeckManager.Instance == null)
         {
             Debug.LogWarning("GameplayManager: DeckManager instance not found.");
             return;
         }
 
         GameBoard opponentBoard = playedByPlayer ? _enemyBoard : _playerBoard;
-        if(opponentBoard == null)
+        if (opponentBoard == null)
         {
             Debug.LogWarning("GameplayManager: Opponent board reference is missing.");
             return;
         }
 
         int columnCount = opponentBoard.grid.GetLength(1);
-        for(int column = 0; column < columnCount; column++)
+        for (int column = 0; column < columnCount; column++)
         {
             CardData targetCard = opponentBoard.GetCard(row, column);
-            if(targetCard == null || targetCard.RankValue != rank)
+            if (targetCard == null || targetCard.RankValue != rank)
             {
                 continue;
             }

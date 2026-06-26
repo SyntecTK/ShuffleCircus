@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIManager
   thinkDelaySeconds: 1
-  cardPlayDelaySeconds: 2
+  cardPlayDelaySeconds: 1
 --- !u!4 &226000248
 Transform:
   m_ObjectHideFlags: 0

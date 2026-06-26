@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -9,13 +10,43 @@ public class SceneLoader : Singleton<SceneLoader>
     {
         if (isLoading) return;
 
-        SceneManager.LoadScene(sceneName);
+        StartCoroutine(LoadSceneRoutine(sceneName));
     }
+
+    public void LoadSceneAdditive(string sceneName)
+    {
+        if (isLoading) return;
+
+        StartCoroutine(LoadSceneAdditiveRoutine(sceneName));
+    }
+
+    public void UnloadAdditiveScene(string sceneName)
+    {
+        if (isLoading) return;
+
+        StartCoroutine(UnloadAdditiveSceneRoutine(sceneName));
+    }
+
 
     private IEnumerator LoadSceneRoutine(string sceneName)
     {
         isLoading = true;
-        yield return null; // Wait a frame to ensure any previous operations are completed
+        SceneManager.LoadScene(sceneName);
+        yield return null;
+        isLoading = false;
+    }
+
+    private IEnumerator LoadSceneAdditiveRoutine(string sceneName)
+    {
+        isLoading = true;
+        yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        isLoading = false;
+    }
+
+    private IEnumerator UnloadAdditiveSceneRoutine(string sceneName)
+    {
+        isLoading = true;
+        yield return SceneManager.UnloadSceneAsync(sceneName);
         isLoading = false;
     }
 }

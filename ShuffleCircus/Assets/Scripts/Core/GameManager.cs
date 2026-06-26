@@ -1,3 +1,4 @@
+using System.Data.SqlTypes;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -27,7 +28,7 @@ public class GameManager : Singleton<GameManager>
 
     public bool TryRegisterPlayedCard()
     {
-        if(!CanPlayCardThisTurn())
+        if (!CanPlayCardThisTurn())
         {
             return false;
         }

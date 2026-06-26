@@ -11,11 +11,29 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private CardSlot sourceSlot;
     private bool wasDropped;
 
-    private void Start()
+    private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponent<Image>();
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+    }
+
+    private void Start()
+    {
+        // Prefer nearest parent canvas, fallback to tagged canvas for older scene setups.
+        canvas = GetComponentInParent<Canvas>();
+        if (canvas == null)
+        {
+            GameObject taggedCanvas = GameObject.FindGameObjectWithTag("Canvas");
+            if (taggedCanvas != null)
+            {
+                canvas = taggedCanvas.GetComponent<Canvas>();
+            }
+        }
+
+        if (canvas == null)
+        {
+            Debug.LogError("CardDrag: No Canvas found for drag calculations.");
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -26,7 +44,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         image.raycastTarget = false;
 
         CardData card = GetComponent<CardData>();
-        if(sourceSlot != null && card != null)
+        if (sourceSlot != null && card != null)
         {
             sourceSlot.RemoveCard(card);
         }
@@ -34,6 +52,11 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (canvas == null)
+        {
+            return;
+        }
+
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
