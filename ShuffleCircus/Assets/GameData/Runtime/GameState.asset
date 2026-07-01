@@ -15,3 +15,4 @@ MonoBehaviour:
   gameMode: 0
   player1Name: 
   player2Name: 
+  aiDifficultyLevel: 1

@@ -40,6 +40,22 @@ public class GameState : ScriptableObject
         return aiDifficultyLevel;
     }
 
+    public void IncreaseAIDifficultyLevel()
+    {
+        if (aiDifficultyLevel < 3)
+        {
+            aiDifficultyLevel++;
+        }
+    }
+
+    public void DecreaseAIDifficultyLevel()
+    {
+        if (aiDifficultyLevel > 1)
+        {
+            aiDifficultyLevel--;
+        }
+    }
+
     public void ResetSession()
     {
         gameMode = GameMode.Singleplayer;

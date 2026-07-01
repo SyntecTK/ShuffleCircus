@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ResultScreen : MonoBehaviour
 {
@@ -57,6 +55,7 @@ public class ResultScreen : MonoBehaviour
 
     public void StartNextGame()
     {
+        GameManager.Instance.State.IncreaseAIDifficultyLevel();
         SceneLoader.Instance.LoadScene("GameBoard");
     }
 }
