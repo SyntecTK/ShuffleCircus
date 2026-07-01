@@ -38,6 +38,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (GameManager.Instance.IsGameOver) return;
+
         originalParent = rectTransform.parent;
         sourceSlot = originalParent.GetComponent<CardSlot>();
         wasDropped = false;
@@ -52,6 +54,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (GameManager.Instance.IsGameOver) return;
+
         if (canvas == null)
         {
             return;
@@ -62,6 +66,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (GameManager.Instance.IsGameOver) return;
+
         image.raycastTarget = true;
         if (!wasDropped && sourceSlot != null)
         {

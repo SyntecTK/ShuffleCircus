@@ -5,6 +5,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameBoard _playerBoard;
     [SerializeField] private GameBoard _enemyBoard;
 
+//-------------------------------- Unity Methods --------------------------------//
     private void Awake()
     {
         GameManager.Instance.SetPlayerTurn(true);
@@ -20,6 +21,8 @@ public class GameplayManager : MonoBehaviour
         EventManager.OnCardDropped -= HandleCardPlayed;
     }
 
+//------------------------------- Gameplay Logic -------------------------------//
+
     private void HandleCardPlayed(int row, int column, bool playedByPlayer)
     {
         GameBoard board = playedByPlayer ? _playerBoard : _enemyBoard;
@@ -34,7 +37,11 @@ public class GameplayManager : MonoBehaviour
         StealMatchingRankInRow(row, card.RankValue, playedByPlayer);
         if (board.IsFull())
         {
-            SceneLoader.Instance.UnloadAdditiveScene("GameBoard");
+            GameManager.Instance.SetGameOver();
+        }
+        else
+        {
+            EventManager.BoardChanged();
         }
     }
 
@@ -67,6 +74,8 @@ public class GameplayManager : MonoBehaviour
             Destroy(targetCard.gameObject);
         }
     }
+
+//------------------------------- Getters -------------------------------//
 
     public GameBoard GetPlayerBoard()
     {

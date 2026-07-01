@@ -6,6 +6,10 @@ public class BoardUI : MonoBehaviour
     [Header("GameBoards")]
     [SerializeField] private GameBoard _playerBoard;
     [SerializeField] private GameBoard _enemyBoard;
+
+    [Header("Screens")]
+    [SerializeField] private GameObject _resultScreen;
+
     [Header("TextFields")]
     [SerializeField] private TMP_Text _playerScoreText;
     [SerializeField] private TMP_Text _playerRow01Text;
@@ -30,12 +34,19 @@ public class BoardUI : MonoBehaviour
     {
         EventManager.OnBoardChanged += UpdateBoardUI;
         EventManager.OnTurnEnded += UpdateBoardUI;
+        EventManager.OnGameOver += ShowResultScreen;
     }
 
     private void OnDisable()
     {
         EventManager.OnBoardChanged -= UpdateBoardUI;
         EventManager.OnTurnEnded -= UpdateBoardUI;
+        EventManager.OnGameOver -= ShowResultScreen;
+    }
+
+    private void ShowResultScreen()
+    {
+        _resultScreen.SetActive(true);
     }
 
     public void UpdateBoardUI()

@@ -10,6 +10,7 @@ public class Eventfield : MonoBehaviour
     private Image image;
     private GameObject eventSystem;
     private GraphicRaycaster mapRaycaster;
+    private Camera mainCam;
 
     private bool isSelectable;
     private bool isFirstLoad = true;
@@ -32,6 +33,8 @@ public class Eventfield : MonoBehaviour
             isSelectable = true;
             isFirstLoad = false;
         }
+        
+        mainCam = Camera.main;
     }
 
     public void OnLevelSelected()

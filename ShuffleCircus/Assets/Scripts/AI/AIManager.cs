@@ -10,6 +10,9 @@ using UnityEngine;
 /// </summary>
 public class AIManager : MonoBehaviour
 {
+    private const int MinDifficulty = 1;
+    private const int MaxDifficulty = 3;
+
     // === INSPECTOR CONFIG ===
     [SerializeField] private float thinkDelaySeconds = 0.5f;
     [SerializeField] private float cardPlayDelaySeconds = 0.3f;
@@ -19,6 +22,7 @@ public class AIManager : MonoBehaviour
     private HandManager handManager;
     private GameBoard playerBoard;
     private GameBoard opponentBoard;
+    private int aiDifficultyLevel = 1;
     
     // === STATE ===
     private bool isAIThinking = false;  // Reentrancy guard: prevent overlapping AI turns
@@ -38,6 +42,7 @@ public class AIManager : MonoBehaviour
     private void Start()
     {
         CacheReferences();
+        ResolveDifficultyFromGameState();
     }
     
     private void OnDestroy()
@@ -53,6 +58,8 @@ public class AIManager : MonoBehaviour
     /// </summary>
     private void HandleAITurnTriggered()
     {
+        if (GameManager.Instance.IsGameOver) return;
+
         // Only execute if it's the opponent's turn and we're not already thinking
         if (GameManager.Instance.IsPlayerTurn || isAIThinking)
         {
@@ -71,10 +78,17 @@ public class AIManager : MonoBehaviour
         {
             // Brief thinking delay for UX
             yield return new WaitForSeconds(thinkDelaySeconds);
+
+            if (GameManager.Instance.IsGameOver) yield break;
             
             // Play up to 4 cards this turn
             while (GameManager.Instance.CanPlayCardThisTurn() && isActiveAndEnabled)
             {
+                if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+                {
+                    yield break;
+                }
+
                 // Step 5: Get legal moves for current board state
                 List<AIMove> legalMoves = GetLegalMoves();
                 
@@ -85,7 +99,7 @@ public class AIManager : MonoBehaviour
                 }
                 
                 // Step 7-8: Evaluate and pick best move
-                AIMove bestMove = EvaluateAndPickBest(legalMoves);
+                AIMove bestMove = EvaluateAndPickMoveByDifficulty(legalMoves);
                 
                 Debug.Log($"AI: Playing move {bestMove}");
                 
@@ -99,7 +113,7 @@ public class AIManager : MonoBehaviour
             // Brief pause before ending turn
             yield return new WaitForSeconds(0.3f);
             
-            if (isActiveAndEnabled)
+            if (isActiveAndEnabled && (GameManager.Instance == null || !GameManager.Instance.IsGameOver))
             {
                 Debug.Log("AI: Ending turn.");
                 GameManager.Instance.EndTurn();
@@ -171,9 +185,22 @@ public class AIManager : MonoBehaviour
     /// - Net score = own row gain + opponent row loss from steal (same row, same rank)
     /// - Pick move with highest net score; random tie-breaking.
     /// </summary>
-    private AIMove EvaluateAndPickBest(List<AIMove> candidates)
+    private AIMove EvaluateAndPickMoveByDifficulty(List<AIMove> candidates)
     {
+        if (candidates == null || candidates.Count == 0)
+        {
+            Debug.LogError("AI: EvaluateAndPickMoveByDifficulty called with no candidates.");
+            return default;
+        }
+
+        if (aiDifficultyLevel <= 1)
+        {
+            // Easy: pick a random legal move.
+            return candidates[UnityEngine.Random.Range(0, candidates.Count)];
+        }
+
         List<AIMove> bestMoves = new List<AIMove>();
+        List<AIMove> scoredMoves = new List<AIMove>(candidates.Count);
         int bestScore = int.MinValue;
         
         foreach (AIMove candidate in candidates)
@@ -182,6 +209,7 @@ public class AIManager : MonoBehaviour
             
             AIMove scoredMove = candidate;
             scoredMove.evaluationScore = score;
+            scoredMoves.Add(scoredMove);
             
             if (score > bestScore)
             {
@@ -194,11 +222,33 @@ public class AIManager : MonoBehaviour
                 bestMoves.Add(scoredMove);
             }
         }
+
+        if (aiDifficultyLevel == 2)
+        {
+            // Medium: choose randomly from the better half of scored moves.
+            scoredMoves.Sort((a, b) => b.evaluationScore.CompareTo(a.evaluationScore));
+            int selectionPoolSize = Mathf.Max(1, scoredMoves.Count / 2);
+            return scoredMoves[UnityEngine.Random.Range(0, selectionPoolSize)];
+        }
         
-        // Random tie-breaking among equally scored moves
+        // Hard (3): optimal play with random tie-breaking among equally scored moves.
         AIMove chosen = bestMoves[UnityEngine.Random.Range(0, bestMoves.Count)];
         Debug.Log($"AI: Best move score={bestScore}, chose {chosen}");
         return chosen;
+    }
+
+    private void ResolveDifficultyFromGameState()
+    {
+        GameState state = GameManager.Instance != null ? GameManager.Instance.State : null;
+        if (state == null)
+        {
+            aiDifficultyLevel = MaxDifficulty;
+            Debug.LogWarning("AI: GameState not found. Falling back to hard difficulty (3).");
+            return;
+        }
+
+        aiDifficultyLevel = Mathf.Clamp(state.AIDifficultyLevel, MinDifficulty, MaxDifficulty);
+        Debug.Log($"AI: Difficulty set to {aiDifficultyLevel}.");
     }
     
     /// <summary>
@@ -296,6 +346,8 @@ public class AIManager : MonoBehaviour
             Debug.LogWarning("AI: Failed to register card play (over 4-card limit?)");
             return;
         }
+
+        handManager.HandDisplay.RevealCard(move.card.GetComponent<RectTransform>(), move.card.Identity);
         
         // 6. Fire event to trigger steal logic via GameplayManager
         EventManager.CardDropped(move.row, move.col, false);  // false = opponent played

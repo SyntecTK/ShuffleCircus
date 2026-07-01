@@ -68,6 +68,8 @@ public class CardSlot : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        if (GameManager.Instance.IsGameOver) return;
+
         CardData card = eventData.pointerDrag != null ? eventData.pointerDrag.GetComponent<CardData>() : null;
         CardDrag cardDrag = eventData.pointerDrag != null ? eventData.pointerDrag.GetComponent<CardDrag>() : null;
         HandManager sourceHand = eventData.pointerDrag != null ? eventData.pointerDrag.GetComponentInParent<HandManager>() : null;

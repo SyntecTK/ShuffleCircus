@@ -29,4 +29,9 @@ public class CardSpriteDataBase : ScriptableObject
             _ => null
         };
     }
+
+    public Sprite GetBackSprite()
+    {
+        return cardBack;
+    }
 }

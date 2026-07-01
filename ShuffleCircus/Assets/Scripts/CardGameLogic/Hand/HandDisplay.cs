@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -88,6 +89,24 @@ public class HandDisplay : MonoBehaviour
         StartCoroutine(AnimateHandDrawRoutine(cards, maxSlots));
     }
 
+    public void RevealCard(RectTransform cardInstance, CardIdentity card)
+    {
+        if (cardInstance == null || cardSpriteDataBase == null)
+        {
+            return;
+        }
+
+        Image cardImage = cardInstance.GetComponentInChildren<Image>();
+        if (cardImage != null)
+        {
+            Sprite sprite = cardSpriteDataBase.GetSprite(card);
+            if (sprite != null)
+            {
+                cardImage.sprite = sprite;
+            }
+        }
+    }
+
     private void ApplyCardVisual(RectTransform cardInstance, CardIdentity drawnCard, int index)
     {
         if (cardInstance == null)
@@ -108,9 +127,17 @@ public class HandDisplay : MonoBehaviour
 
         Image cardImage = cardInstance.GetComponentInChildren<Image>();
         Sprite sprite = cardSpriteDataBase != null ? cardSpriteDataBase.GetSprite(drawnCard) : null;
+
         if (cardImage != null && sprite != null)
         {
-            cardImage.sprite = sprite;
+            if(GameManager.Instance.IsPlayerTurn)
+            {
+                cardImage.sprite = sprite;
+            }
+            else
+            {
+                cardImage.sprite = cardSpriteDataBase.GetBackSprite();
+            }
         }
     }
 

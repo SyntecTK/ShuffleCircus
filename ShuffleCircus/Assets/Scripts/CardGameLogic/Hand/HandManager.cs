@@ -144,6 +144,8 @@ public class HandManager : MonoBehaviour
             return;
         }
 
+        if (GameManager.Instance.IsGameOver) return;
+
         bool previousHandIsPlayer = isPlayer;
         bool nextHandIsPlayer = GameManager.Instance.IsPlayerTurn;
 
