@@ -3,6 +3,23 @@ using UnityEngine.InputSystem;
 
 public class InputManager : Singleton<InputManager>
 {
+    private void OnEnable()
+    {
+        EventManager.OnDrawnHand += OnDrawnHand;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnDrawnHand -= OnDrawnHand;
+    }
+
+    private bool canPassTurn = true;
+
+    private void OnDrawnHand()
+    {
+        canPassTurn = true; 
+    }
+
     private void OnInteract()
     {
         if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
@@ -10,8 +27,11 @@ public class InputManager : Singleton<InputManager>
             return;
         }
 
-        Debug.Log("Interact action triggered.");
-        GameManager.Instance.EndTurn();
-        EventManager.BoardChanged();
+        if(canPassTurn)
+        {
+            canPassTurn = false;
+            GameManager.Instance.EndTurn();
+            EventManager.BoardChanged();
+        }
     }
 }

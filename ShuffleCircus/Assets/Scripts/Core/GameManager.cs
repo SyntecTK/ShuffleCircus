@@ -10,6 +10,17 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private int cardsPlayedThisTurn;
     [SerializeField] private bool isGameOver;
 
+    public GameState State => gameState;
+    public bool IsPlayerTurn => isPlayerTurn;
+    public bool IsGameOver => isGameOver;
+    public int CardsPlayedThisTurn => cardsPlayedThisTurn;
+    public int CardsRemainingThisTurn => MaxCardsPerTurn - cardsPlayedThisTurn;
+
+    private void Start()
+    {
+        State.ResetSession();
+    }
+
     public void EndTurn()
     {
         if (isGameOver)
@@ -21,13 +32,6 @@ public class GameManager : Singleton<GameManager>
         cardsPlayedThisTurn = 0;
         EventManager.TurnEnded();
     }
-
-    public GameState State => gameState;
-    public bool IsPlayerTurn => isPlayerTurn;
-    public bool IsGameOver => isGameOver;
-    public int CardsPlayedThisTurn => cardsPlayedThisTurn;
-    public int CardsRemainingThisTurn => MaxCardsPerTurn - cardsPlayedThisTurn;
-
     public bool CanPlayCardThisTurn()
     {
         if (isGameOver)

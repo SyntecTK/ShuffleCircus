@@ -55,6 +55,7 @@ public class ResultScreen : MonoBehaviour
 
     public void StartNextGame()
     {
+        DeckManager.Instance.ResetDecks();
         GameManager.Instance.State.IncreaseAIDifficultyLevel();
         SceneLoader.Instance.LoadScene("GameBoard");
     }

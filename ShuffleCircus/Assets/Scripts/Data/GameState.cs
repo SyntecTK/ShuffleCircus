@@ -61,7 +61,7 @@ public class GameState : ScriptableObject
         gameMode = GameMode.Singleplayer;
         player1Name = string.Empty;
         player2Name = string.Empty;
-        aiDifficultyLevel = 3;
+        aiDifficultyLevel = 1;
     }
 
 }

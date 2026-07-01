@@ -215,6 +215,7 @@ public class HandDisplay : MonoBehaviour
         }
 
         FinalizeCards(animatedCards, animData);
+        EventManager.DrawnHand();
     }
 
     private AnimatedCard[] PrepareCards(List<RectTransform> activeCards)
