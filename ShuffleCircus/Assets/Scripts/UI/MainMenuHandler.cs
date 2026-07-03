@@ -15,7 +15,7 @@ public class MainMenuHandler : MonoBehaviour
     public void StartGameMultiplayer()
     {
         GameManager.Instance.State.SetGameMode(GameMode.Multiplayer);
-        SceneManager.LoadScene("GameBoard");
+        SceneManager.LoadScene("MultiplayerIntro");
     }
 
     public void OpenSettings()
