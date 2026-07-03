@@ -6,6 +6,7 @@ public static class EventManager
     public static event Action OnTurnEnded;
     public static event Action OnBoardChanged;
     public static event Action OnGameOver;
+    public static event Action OnHandDrawStarted;
     public static event Action OnDrawnHand;
 
     public static void CardDropped(int rowIndex, int columnIndex, bool isPlayerSlot)
@@ -26,6 +27,11 @@ public static class EventManager
     public static void GameOver()
     {
         OnGameOver?.Invoke();
+    }
+
+    public static void HandDrawStarted()
+    {
+        OnHandDrawStarted?.Invoke();
     }
 
     public static void DrawnHand()

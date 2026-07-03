@@ -86,6 +86,7 @@ public class HandDisplay : MonoBehaviour
     public void AnimateHandDraw(IReadOnlyList<RectTransform> cards, int maxSlots)
     {
         StopAllCoroutines();
+        EventManager.HandDrawStarted();
         StartCoroutine(AnimateHandDrawRoutine(cards, maxSlots));
     }
 
@@ -195,6 +196,7 @@ public class HandDisplay : MonoBehaviour
         int count = activeCards.Count;
         if (count == 0)
         {
+            EventManager.DrawnHand();
             yield break;
         }
 
