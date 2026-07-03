@@ -39,29 +39,45 @@ public static class ScoringSystem
         bool isFlush = isFiveCards && cards.Select(c => c.Suit).Distinct().Count() == 1;
 
         bool isStraight = false;
-        List<int> sorted = null;
+        List<int> ordered = null;
 
         if(isFiveCards && groupSizes[0] == 1)
         {
-            sorted = ranks.OrderBy(v => v).ToList();
-            isStraight = true;
-            for(int i = 1; i < sorted.Count; i++)
+            ordered = cards.Select(c => c.RankValue).ToList();
+
+            bool isNormalStraight = true;
+            for(int i = 1; i < ordered.Count; i++)
             {
-                if(sorted[i] != sorted[i - 1] + 1)
+                if(ordered[i] != ordered[i - 1] + 1)
                 {
-                    isStraight = false;
+                    isNormalStraight = false;
                     break;
                 }
             }
-            if (!isStraight)
+
+            if(isNormalStraight)
             {
-                isStraight = sorted[0] == 2 && sorted[1] == 3 && sorted[2] == 4 && sorted[3] == 5 && sorted[4] == 14;
+                isStraight = true;
+            }
+            else
+            {
+                // Allow Ace to be used as 1 for A-2-3-4-5 in placed order.
+                List<int> aceLowOrdered = ordered.Select(v => v == 14 ? 1 : v).ToList();
+                isStraight = true;
+                for(int i = 1; i < aceLowOrdered.Count; i++)
+                {
+                    if(aceLowOrdered[i] != aceLowOrdered[i - 1] + 1)
+                    {
+                        isStraight = false;
+                        break;
+                    }
+                }
             }
         }
 
         if (isFlush && isStraight)
         {
-            bool isRoyal = sorted != null && sorted[0] == 10 && sorted[1] == 11 && sorted[2] == 12 && sorted[3] == 13 && sorted[4] == 14;
+            bool isRoyal = ordered != null && ordered[0] == 10 && ordered[1] == 11 && ordered[2] == 12 && ordered[3] == 13 && ordered[4] == 14;
             return isRoyal ? PokerHand.RoyalFlush : PokerHand.StraightFlush;
         }
 
@@ -144,7 +160,6 @@ public static class ScoringSystem
                 int fourRank = counts.First(kvp => kvp.Value == 4).Key;
                 return cards.Where(c => c.RankValue == fourRank).Sum(c => c.PointValue);
 
-            // Straight, Flush, FullHouse, StraightFlush, RoyalFlush, FiveOfAKind: all cards contribute
             default:
                 return cards.Sum(c => c.PointValue);
         }

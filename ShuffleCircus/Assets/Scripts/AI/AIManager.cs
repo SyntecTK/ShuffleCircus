@@ -12,6 +12,7 @@ public class AIManager : MonoBehaviour
 {
     private const int MinDifficulty = 1;
     private const int MaxDifficulty = 3;
+    private const float OpeningPhaseFillThreshold = 0.45f;
 
     // === INSPECTOR CONFIG ===
     [SerializeField] private float thinkDelaySeconds = 0.5f;
@@ -73,6 +74,7 @@ public class AIManager : MonoBehaviour
     private IEnumerator AIThinkAndPlayCoroutine()
     {
         isAIThinking = true;
+        int aiCardsPlayedThisTurn = 0;
         
         try
         {
@@ -100,11 +102,21 @@ public class AIManager : MonoBehaviour
                 
                 // Step 7-8: Evaluate and pick best move
                 AIMove bestMove = EvaluateAndPickMoveByDifficulty(legalMoves);
+
+                if (ShouldStopPlayingThisTurn(aiCardsPlayedThisTurn, (int)bestMove.evaluationScore))
+                {
+                    Debug.Log($"AI: Choosing to hold after {aiCardsPlayedThisTurn} card(s) this turn.");
+                    break;
+                }
                 
                 Debug.Log($"AI: Playing move {bestMove}");
                 
                 // Step 11-12: Execute the move
-                ExecuteMove(bestMove);
+                if (!ExecuteMove(bestMove))
+                {
+                    break;
+                }
+                aiCardsPlayedThisTurn++;
                 
                 // Pacing delay between card plays for visual clarity
                 yield return new WaitForSeconds(cardPlayDelaySeconds);
@@ -281,8 +293,107 @@ public class AIManager : MonoBehaviour
         
         int playerScoreAfter = ScoringSystem.CalculateRowScore(playerRow);
         int opponentLoss = playerScoreBefore - playerScoreAfter;  // positive = opponent lost score
+
+        int openingRankBias = GetOpeningLowCardBias(move.card);
         
-        return ownGain + opponentLoss;
+        return ownGain + opponentLoss + openingRankBias;
+    }
+
+    private int GetOpeningLowCardBias(CardData card)
+    {
+        if (card == null || opponentBoard == null)
+        {
+            return 0;
+        }
+
+        int occupiedSlots = CountOccupiedSlots(opponentBoard);
+        int totalSlots = opponentBoard.grid.GetLength(0) * opponentBoard.grid.GetLength(1);
+        float fill = totalSlots > 0 ? (float)occupiedSlots / totalSlots : 1f;
+
+        if (fill >= OpeningPhaseFillThreshold)
+        {
+            return 0;
+        }
+
+        // Early game: keep high cards slightly more often, prefer low cards.
+        int rank = Mathf.Clamp(card.RankValue, 2, 14);
+        int rawBias = Mathf.Clamp(8 - rank, -6, 6);
+        float intensity = 1f - (fill / OpeningPhaseFillThreshold);
+
+        float difficultyWeight = aiDifficultyLevel switch
+        {
+            1 => 0.5f,
+            2 => 0.75f,
+            _ => 1f
+        };
+
+        return Mathf.RoundToInt(rawBias * intensity * difficultyWeight);
+    }
+
+    private bool ShouldStopPlayingThisTurn(int cardsPlayedByAIThisTurn, int bestMoveScore)
+    {
+        if (cardsPlayedByAIThisTurn <= 0)
+        {
+            return false;
+        }
+
+        float stopChance = aiDifficultyLevel switch
+        {
+            1 => cardsPlayedByAIThisTurn switch
+            {
+                1 => 0.25f,
+                2 => 0.45f,
+                _ => 0.7f
+            },
+            2 => cardsPlayedByAIThisTurn switch
+            {
+                1 => 0.1f,
+                2 => 0.25f,
+                _ => 0.45f
+            },
+            _ => cardsPlayedByAIThisTurn switch
+            {
+                1 => 0.05f,
+                2 => 0.12f,
+                _ => 0.25f
+            }
+        };
+
+        // If a move is very strong, AI is less likely to pass.
+        if (bestMoveScore >= 20)
+        {
+            stopChance *= 0.4f;
+        }
+        else if (bestMoveScore <= 5)
+        {
+            stopChance *= 1.2f;
+        }
+
+        return UnityEngine.Random.value < Mathf.Clamp01(stopChance);
+    }
+
+    private int CountOccupiedSlots(GameBoard board)
+    {
+        if (board == null)
+        {
+            return 0;
+        }
+
+        int occupied = 0;
+        int rows = board.grid.GetLength(0);
+        int cols = board.grid.GetLength(1);
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                if (board.GetCard(row, col) != null)
+                {
+                    occupied++;
+                }
+            }
+        }
+
+        return occupied;
     }
     
     /// <summary>
@@ -311,12 +422,12 @@ public class AIManager : MonoBehaviour
     /// 
     /// Implemented in Step 11-12.
     /// </summary>
-    private void ExecuteMove(AIMove move)
+    private bool ExecuteMove(AIMove move)
     {
         if (move.card == null)
         {
             Debug.LogError("AI: ExecuteMove called with null card.");
-            return;
+            return false;
         }
         
         // 1. Get the target CardSlot so we can reparent the card visually
@@ -324,7 +435,7 @@ public class AIManager : MonoBehaviour
         if (targetSlot == null)
         {
             Debug.LogError($"AI: No CardSlot found at ({move.row}, {move.col})");
-            return;
+            return false;
         }
         
         // 2. Remove from hand list BEFORE reparenting so turn-end cleanup ignores it
@@ -344,7 +455,7 @@ public class AIManager : MonoBehaviour
         if (!registered)
         {
             Debug.LogWarning("AI: Failed to register card play (over 4-card limit?)");
-            return;
+            return false;
         }
 
         handManager.HandDisplay.RevealCard(move.card.GetComponent<RectTransform>(), move.card.Identity);
@@ -356,6 +467,7 @@ public class AIManager : MonoBehaviour
         EventManager.BoardChanged();
         
         Debug.Log($"AI: Move executed at ({move.row}, {move.col})");
+        return true;
     }
     
     // === REFERENCE CACHING ===

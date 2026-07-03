@@ -10,11 +10,17 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private Canvas canvas;
     private CardSlot sourceSlot;
     private bool wasDropped;
+    private int originalSiblingIndex;
+    private Vector2 originalAnchoredPosition;
+    private Quaternion originalLocalRotation;
+    private Vector3 originalLocalScale;
+    private CardData card;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponent<Image>();
+        card = GetComponent<CardData>();
     }
 
     private void Start()
@@ -39,13 +45,18 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (GameManager.Instance.IsGameOver) return;
+        if(card.IsLocked) return;
+
 
         originalParent = rectTransform.parent;
+        originalSiblingIndex = rectTransform.GetSiblingIndex();
+        originalAnchoredPosition = rectTransform.anchoredPosition;
+        originalLocalRotation = rectTransform.localRotation;
+        originalLocalScale = rectTransform.localScale;
         sourceSlot = originalParent.GetComponent<CardSlot>();
         wasDropped = false;
         image.raycastTarget = false;
 
-        CardData card = GetComponent<CardData>();
         if (sourceSlot != null && card != null)
         {
             sourceSlot.RemoveCard(card);
@@ -54,12 +65,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsGameOver) return;
-
-        if (canvas == null)
-        {
-            return;
-        }
+        if (GameManager.Instance.IsGameOver || canvas == null) return;
+        if(card.IsLocked) return;
 
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
@@ -69,17 +76,18 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (GameManager.Instance.IsGameOver) return;
 
         image.raycastTarget = true;
-        if (!wasDropped && sourceSlot != null)
+        if (!wasDropped)
         {
-            transform.SetParent(originalParent);
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-            transform.localScale = Vector3.one;
+            rectTransform.SetParent(originalParent, false);
+            rectTransform.SetSiblingIndex(originalSiblingIndex);
+            rectTransform.anchoredPosition = originalAnchoredPosition;
+            rectTransform.localRotation = originalLocalRotation;
+            rectTransform.localScale = originalLocalScale;
 
             CardData cardData = GetComponent<CardData>();
             if (sourceSlot != null && cardData != null)
             {
-                sourceSlot.RestoreCard(cardData);
+                sourceSlot.RestoreCard(cardData); 
             }
         }
 
@@ -88,11 +96,16 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void MarkDropped()
     {
         wasDropped = true;
+        card.LockCard();
+        enabled = false;
     }
 
     public void RestoreToOriginalPosition()
     {
-        rectTransform.SetParent(originalParent);
-        rectTransform.localPosition = Vector3.zero;
+        rectTransform.SetParent(originalParent, false);
+        rectTransform.SetSiblingIndex(originalSiblingIndex);
+        rectTransform.anchoredPosition = originalAnchoredPosition;
+        rectTransform.localRotation = originalLocalRotation;
+        rectTransform.localScale = originalLocalScale;
     }
 }
