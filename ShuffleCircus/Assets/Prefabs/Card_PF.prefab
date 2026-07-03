@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7987134947718550584}
   - component: {fileID: 2297397904437882992}
   - component: {fileID: -642714278542169288}
+  - component: {fileID: 7213164497622635840}
   m_Layer: 5
   m_Name: Card_PF
   m_TagString: Untagged
@@ -102,3 +103,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   isLocked: 0
+--- !u!114 &7213164497622635840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8732264426583041850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e28b585e6861d4788a956084d6d0e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardHover
+  hoverYOffset: 28
+  hoverScaleMultiplier: 1.12
+  hoverDuration: 0.1
+  returnDuration: 0.1

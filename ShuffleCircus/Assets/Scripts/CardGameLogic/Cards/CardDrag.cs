@@ -15,12 +15,17 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private Quaternion originalLocalRotation;
     private Vector3 originalLocalScale;
     private CardData card;
+    private CardHover cardHover;
+    private bool isDragging;
+
+    public bool IsDragging => isDragging;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponent<Image>();
         card = GetComponent<CardData>();
+        cardHover = GetComponent<CardHover>();
     }
 
     private void Start()
@@ -47,6 +52,10 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (GameManager.Instance.IsGameOver) return;
         if(card.IsLocked) return;
 
+        if (cardHover != null)
+        {
+            cardHover.PrepareForDrag();
+        }
 
         originalParent = rectTransform.parent;
         originalSiblingIndex = rectTransform.GetSiblingIndex();
@@ -55,6 +64,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         originalLocalScale = rectTransform.localScale;
         sourceSlot = originalParent.GetComponent<CardSlot>();
         wasDropped = false;
+        isDragging = true;
+        rectTransform.localRotation = Quaternion.identity;
         image.raycastTarget = false;
 
         if (sourceSlot != null && card != null)
@@ -74,6 +85,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnEndDrag(PointerEventData eventData)
     {
         if (GameManager.Instance.IsGameOver) return;
+
+        isDragging = false;
 
         image.raycastTarget = true;
         if (!wasDropped)
@@ -96,6 +109,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void MarkDropped()
     {
         wasDropped = true;
+        isDragging = false;
         card.LockCard();
         enabled = false;
     }

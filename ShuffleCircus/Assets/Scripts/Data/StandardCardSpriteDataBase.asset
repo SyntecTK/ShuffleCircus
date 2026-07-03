@@ -72,4 +72,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 4cf28dd8b9f617d4f8aa40a9765eaf68, type: 3}
     - {fileID: 21300000, guid: d6281cf63ad1fbb429670a3fb550c675, type: 3}
     - {fileID: 21300000, guid: 5e046ab7a0638de42882accb5d4afa49, type: 3}
-  cardBack: {fileID: 21300000, guid: a690973c86e38c44c9bd1da2e8b961fb, type: 3}
+  playerCardBack: {fileID: 21300000, guid: a690973c86e38c44c9bd1da2e8b961fb, type: 3}
+  enemyCardBack: {fileID: 21300000, guid: 216e0e2d4f6014f4d9ca80e3181a63f3, type: 3}

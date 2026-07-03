@@ -59,6 +59,7 @@ public class AIManager : MonoBehaviour
     /// </summary>
     private void HandleAITurnTriggered()
     {
+        if (IsMultiplayerMode()) return;
         if (GameManager.Instance.IsGameOver) return;
 
         // Only execute if it's the opponent's turn and we're not already thinking
@@ -78,15 +79,17 @@ public class AIManager : MonoBehaviour
         
         try
         {
+            if (IsMultiplayerMode()) yield break;
+
             // Brief thinking delay for UX
             yield return new WaitForSeconds(thinkDelaySeconds);
 
-            if (GameManager.Instance.IsGameOver) yield break;
+            if (IsMultiplayerMode() || GameManager.Instance.IsGameOver) yield break;
             
             // Play up to 4 cards this turn
             while (GameManager.Instance.CanPlayCardThisTurn() && isActiveAndEnabled)
             {
-                if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+                if (IsMultiplayerMode() || (GameManager.Instance != null && GameManager.Instance.IsGameOver))
                 {
                     yield break;
                 }
@@ -261,6 +264,13 @@ public class AIManager : MonoBehaviour
 
         aiDifficultyLevel = Mathf.Clamp(state.AIDifficultyLevel, MinDifficulty, MaxDifficulty);
         Debug.Log($"AI: Difficulty set to {aiDifficultyLevel}.");
+    }
+
+    private bool IsMultiplayerMode()
+    {
+        return GameManager.Instance != null
+            && GameManager.Instance.State != null
+            && GameManager.Instance.State.GameMode == GameMode.Multiplayer;
     }
     
     /// <summary>
@@ -446,6 +456,18 @@ public class AIManager : MonoBehaviour
         move.card.transform.localPosition = Vector3.zero;
         move.card.transform.localRotation = Quaternion.identity;
         move.card.transform.localScale = Vector3.one;
+
+        CardHover cardHover = move.card.GetComponent<CardHover>();
+        if (cardHover != null)
+        {
+            cardHover.DisableHover();
+        }
+
+        CardDrag cardDrag = move.card.GetComponent<CardDrag>();
+        if (cardDrag != null)
+        {
+            cardDrag.MarkDropped();
+        }
         
         // 4. Update the logical board grid
         opponentBoard.PlaceCard(move.row, move.col, move.card);

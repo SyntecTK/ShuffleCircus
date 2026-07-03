@@ -6,8 +6,15 @@ public class MainMenuHandler : MonoBehaviour
 {
     [SerializeField] private InputField playerNameInput;
 
-    public void StartGame()
+    public void StartGameSolo()
     {
+        GameManager.Instance.State.SetGameMode(GameMode.Singleplayer);
+        SceneManager.LoadScene("GameBoard");
+    }
+
+    public void StartGameMultiplayer()
+    {
+        GameManager.Instance.State.SetGameMode(GameMode.Multiplayer);
         SceneManager.LoadScene("GameBoard");
     }
 

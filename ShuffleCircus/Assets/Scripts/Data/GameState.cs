@@ -3,7 +3,7 @@ using UnityEngine;
 public enum GameMode
 {
     Singleplayer,
-    LocalMultiplayer
+    Multiplayer
 }
 
 [CreateAssetMenu]

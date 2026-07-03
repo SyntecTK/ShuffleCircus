@@ -114,6 +114,12 @@ public class CardSlot : MonoBehaviour, IDropHandler
         card.transform.localRotation = Quaternion.identity;
         card.transform.localScale = Vector3.one;
 
+        CardHover cardHover = card.GetComponent<CardHover>();
+        if (cardHover != null)
+        {
+            cardHover.DisableHover();
+        }
+
         sourceHand?.RemoveCardFromHand(card.GetComponent<RectTransform>());
 
         board.PlaceCard(row, column, card);

@@ -13,7 +13,8 @@ public class CardSpriteDataBase : ScriptableObject
     public SuitSet diamonds;
     public SuitSet clubs;
     public SuitSet spades;
-    public Sprite cardBack;
+    public Sprite playerCardBack;
+    public Sprite enemyCardBack;
 
     public Sprite GetSprite(CardIdentity id)
     {
@@ -30,8 +31,13 @@ public class CardSpriteDataBase : ScriptableObject
         };
     }
 
-    public Sprite GetBackSprite()
+    public Sprite GetPlayerBackSprite()
     {
-        return cardBack;
+        return playerCardBack;
+    }
+
+    public Sprite GetEnemyBackSprite()
+    {
+        return enemyCardBack;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class InputManager : Singleton<InputManager>
 {
     private bool canPassTurn;
+    public bool CanPassTurn => canPassTurn;
 
     private void OnEnable()
     {
@@ -29,10 +30,21 @@ public class InputManager : Singleton<InputManager>
 
     private void OnInteract()
     {
-        if (GameManager.Instance != null && (GameManager.Instance.IsGameOver 
-            || !GameManager.Instance.IsPlayerTurn))
+        if(GameManager.Instance.State.GameMode == GameMode.Singleplayer)
         {
-            return;
+            if (GameManager.Instance != null && 
+                (GameManager.Instance.IsGameOver || 
+                !GameManager.Instance.IsPlayerTurn))
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+            {
+                return;
+            }
         }
 
         if(canPassTurn)

@@ -77,10 +77,12 @@ public class HandDisplay : MonoBehaviour
         if (UseBezier())
         {
             ArrangeAlongBezier(activeCards, maxSlots);
+            UpdateHoverBasePoses(activeCards);
             return;
         }
 
         ArrangeLinear(activeCards);
+        UpdateHoverBasePoses(activeCards);
     }
 
     public void AnimateHandDraw(IReadOnlyList<RectTransform> cards, int maxSlots)
@@ -131,13 +133,13 @@ public class HandDisplay : MonoBehaviour
 
         if (cardImage != null && sprite != null)
         {
-            if(GameManager.Instance.IsPlayerTurn)
+            if(GameManager.Instance.IsPlayerTurn || GameManager.Instance.State.GameMode == GameMode.Multiplayer)
             {
                 cardImage.sprite = sprite;
             }
             else
             {
-                cardImage.sprite = cardSpriteDataBase.GetBackSprite();
+                cardImage.sprite = cardSpriteDataBase.GetEnemyBackSprite();
             }
         }
     }
@@ -384,6 +386,44 @@ public class HandDisplay : MonoBehaviour
             if (card.Canvas != null)
             {
                 card.Canvas.alpha = 1f;
+            }
+        }
+
+        UpdateHoverBasePoses(animatedCards);
+    }
+
+    private void UpdateHoverBasePoses(IReadOnlyList<RectTransform> cards)
+    {
+        for (int i = 0; i < cards.Count; i++)
+        {
+            RectTransform card = cards[i];
+            if (card == null)
+            {
+                continue;
+            }
+
+            CardHover hover = card.GetComponent<CardHover>();
+            if (hover != null)
+            {
+                hover.UpdateBasePose();
+            }
+        }
+    }
+
+    private void UpdateHoverBasePoses(AnimatedCard[] cards)
+    {
+        for (int i = 0; i < cards.Length; i++)
+        {
+            RectTransform cardRect = cards[i].Rect;
+            if (cardRect == null)
+            {
+                continue;
+            }
+
+            CardHover hover = cardRect.GetComponent<CardHover>();
+            if (hover != null)
+            {
+                hover.UpdateBasePose();
             }
         }
     }

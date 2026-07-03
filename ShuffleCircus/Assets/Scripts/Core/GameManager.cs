@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     public bool IsPlayerTurn => isPlayerTurn;
     public bool IsGameOver => isGameOver;
     public int CardsPlayedThisTurn => cardsPlayedThisTurn;
+    public int MaxCardsAllowedPerTurn => MaxCardsPerTurn;
     public int CardsRemainingThisTurn => MaxCardsPerTurn - cardsPlayedThisTurn;
 
     private void Start()
