@@ -5,8 +5,8 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameBoard _playerBoard;
     [SerializeField] private GameBoard _enemyBoard;
 
-//-------------------------------- Unity Methods --------------------------------//
-    private void Awake()
+    //-------------------------------- Unity Methods --------------------------------//
+    private void Start()
     {
         GameManager.Instance.SetPlayerTurn(true);
     }
@@ -21,7 +21,7 @@ public class GameplayManager : MonoBehaviour
         EventManager.OnCardDropped -= HandleCardPlayed;
     }
 
-//------------------------------- Gameplay Logic -------------------------------//
+    //------------------------------- Gameplay Logic -------------------------------//
 
     private void HandleCardPlayed(int row, int column, bool playedByPlayer)
     {
@@ -75,7 +75,7 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-//------------------------------- Getters -------------------------------//
+    //------------------------------- Getters -------------------------------//
 
     public GameBoard GetPlayerBoard()
     {

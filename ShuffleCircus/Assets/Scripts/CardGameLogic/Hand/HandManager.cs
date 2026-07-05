@@ -8,6 +8,8 @@ public class HandManager : MonoBehaviour
     [SerializeField] private Transform cardParent;
     public HandDisplay HandDisplay => handDisplay;
 
+    private AudioSource audioSource;
+
     [Header("Settings")]
     [SerializeField] private bool isPlayer = true;
     [SerializeField] private bool populateOnStart = true;
@@ -28,17 +30,14 @@ public class HandManager : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         if (populateOnStart)
         {
             bool initialHandIsPlayer = GameManager.Instance != null ? GameManager.Instance.IsPlayerTurn : isPlayer;
             isPlayer = initialHandIsPlayer;
             DrawHand(initialHandIsPlayer);
         }
-    }
-
-    public void DrawHand()
-    {
-        DrawHand(isPlayer);
     }
 
     private void DrawHand(bool drawForPlayer)
@@ -70,6 +69,7 @@ public class HandManager : MonoBehaviour
             handCards.Add(cardInstance);
         }
 
+        audioSource.Play();
         RearrangeCards();
         handDisplay.AnimateHandDraw(handCards, handSize);
         EventManager.BoardChanged();
@@ -102,12 +102,12 @@ public class HandManager : MonoBehaviour
 
     public void RemoveCardFromHand(RectTransform card)
     {
-        if(card == null)
+        if (card == null)
         {
             return;
         }
 
-        if(handCards.Remove(card))
+        if (handCards.Remove(card))
         {
             handDisplay.ArrangeCards(handCards, handSize);
         }
@@ -139,7 +139,7 @@ public class HandManager : MonoBehaviour
 
     private void HandleTurnEnded()
     {
-        if(GameManager.Instance == null)
+        if (GameManager.Instance == null)
         {
             return;
         }
@@ -161,21 +161,21 @@ public class HandManager : MonoBehaviour
 
     private void DiscardRemainingHandCards(bool discardForPlayer)
     {
-        if(DeckManager.Instance == null)
+        if (DeckManager.Instance == null)
         {
             return;
         }
 
-        for(int i = 0; i < handCards.Count; i++)
+        for (int i = 0; i < handCards.Count; i++)
         {
             RectTransform cardTransform = handCards[i];
-            if(cardTransform == null || cardTransform.parent != cardParent)
+            if (cardTransform == null || cardTransform.parent != cardParent)
             {
                 continue;
             }
 
             CardData cardData = cardTransform.GetComponent<CardData>();
-            if(cardData != null)
+            if (cardData != null)
             {
                 DeckManager.Instance.AddToDiscard(cardData.Identity, discardForPlayer);
             }

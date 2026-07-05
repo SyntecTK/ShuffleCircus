@@ -31,8 +31,7 @@ public class SceneLoader : Singleton<SceneLoader>
     private IEnumerator LoadSceneRoutine(string sceneName)
     {
         isLoading = true;
-        SceneManager.LoadScene(sceneName);
-        yield return null;
+        yield return SceneManager.LoadSceneAsync(sceneName);
         isLoading = false;
     }
 

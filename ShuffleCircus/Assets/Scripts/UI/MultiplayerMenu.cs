@@ -10,6 +10,7 @@ public class MultiplayerMenu : MonoBehaviour
     [SerializeField] private Image _p2TicketCut;
     [SerializeField] private TMP_InputField _p1NameInput;
     [SerializeField] private TMP_InputField _p2NameInput;
+    private AudioSource audioSource;
 
     private string p1Name;
     private string p2Name;
@@ -28,16 +29,21 @@ public class MultiplayerMenu : MonoBehaviour
         _p2NameInput.onSubmit.RemoveListener(OnInputEnd);
     }
 
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnInputEnd(string input)
     {
-        if(_p1NameInput.isFocused)
+        if (_p1NameInput.isFocused)
         {
             _p1TicketCut.GetComponent<Animator>().Play("TicketRip");
             p1Name = string.IsNullOrEmpty(_p1NameInput.text) ? "Spieler 1" : _p1NameInput.text;
             Debug.Log("Entered on Ticket 1");
             p1Ready = true;
         }
-        else if(_p2NameInput.isFocused)
+        else if (_p2NameInput.isFocused)
         {
             _p2TicketCut.GetComponent<Animator>().Play("TicketRip");
             p2Name = string.IsNullOrEmpty(_p2NameInput.text) ? "Spieler 2" : _p2NameInput.text;
@@ -45,8 +51,9 @@ public class MultiplayerMenu : MonoBehaviour
 
             p2Ready = true;
         }
+        audioSource.Play();
 
-        if(p1Ready && p2Ready)
+        if (p1Ready && p2Ready)
         {
             StartCoroutine(LoadGameBoardRoutine());
             GameManager.Instance.State.SetPlayerNames(p1Name, p2Name);
