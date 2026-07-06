@@ -69,6 +69,12 @@ public class GameplayManager : MonoBehaviour
                 continue;
             }
 
+            if (ArtifactManager.Instance != null &&
+                !ArtifactManager.Instance.CanCardBeStolen(targetCard, rank, opponentBoard))
+            {
+                continue;
+            }
+
             opponentBoard.RemoveCard(row, column);
             DeckManager.Instance.AddToDiscard(targetCard.Identity, playedByPlayer);
             Destroy(targetCard.gameObject);

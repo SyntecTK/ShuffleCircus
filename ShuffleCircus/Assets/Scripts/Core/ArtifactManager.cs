@@ -83,4 +83,22 @@ public class ArtifactManager : Singleton<ArtifactManager>
 
         return modifiedTotalScore;
     }
+
+    public bool CanCardBeStolen(CardData targetCard, int stolenRank, GameBoard targetBoard)
+    {
+        foreach (ArtifactData artifact in activeArtifacts)
+        {
+            if (artifact == null || artifact.Effect == null)
+            {
+                continue;
+            }
+
+            if (!artifact.Effect.CardCanBeStolen(targetCard, stolenRank, targetBoard))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -394,7 +394,7 @@ MonoBehaviour:
   activeArtifacts: []
   allArtifacts: []
   addTestArtifactOnStart: 1
-  testArtifact: {fileID: 11400000, guid: 6212851bcd6fbe14bb7c8b9fbb5e1989, type: 2}
+  testArtifact: {fileID: 11400000, guid: 751ddbf0f56d01541baeea9f0670fc48, type: 2}
 --- !u!4 &921479833
 Transform:
   m_ObjectHideFlags: 0
