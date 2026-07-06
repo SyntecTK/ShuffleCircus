@@ -2,6 +2,7 @@ using System;
 
 public static class EventManager 
 {
+    //--------------GameBoard-------------
     public static event Action<int, int, bool> OnCardDropped;
     public static event Action OnTurnEnded;
     public static event Action OnBoardChanged;
@@ -9,6 +10,10 @@ public static class EventManager
     public static event Action OnHandDrawStarted;
     public static event Action OnDrawnHand;
 
+    //----------Artifacts-----------------
+    public static event Action OnAddedArtifact;
+
+    //-------GameBoard Methods------------
     public static void CardDropped(int rowIndex, int columnIndex, bool isPlayerSlot)
     {
         OnCardDropped?.Invoke(rowIndex, columnIndex, isPlayerSlot);
@@ -38,4 +43,13 @@ public static class EventManager
     {
         OnDrawnHand?.Invoke();
     }
+
+    //--------- Artifact Methods----------
+
+    public static void AddedArtifact()
+    {
+        OnAddedArtifact?.Invoke();
+    }
+    
+
 }

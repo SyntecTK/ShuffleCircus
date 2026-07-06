@@ -113,7 +113,7 @@ public static class ScoringSystem
         {
             cards[i] = board.GetCard(row, i);
         }
-        return CalculateRowScore(cards);
+        return CalculateRowScore(cards, board);
     }
 
     /// <summary>
@@ -121,9 +121,21 @@ public static class ScoringSystem
     /// </summary>
     public static int CalculateRowScore(CardData[] rowCards)
     {
+        return CalculateRowScore(rowCards, null);
+    }
+
+    private static int CalculateRowScore(CardData[] rowCards, GameBoard board)
+    {
         PokerHand hand = GetPokerhand(rowCards);
         int baseScore = GetHandScore(rowCards, hand);
-        return baseScore * handMultipliers[hand];
+        int finalScore = baseScore * handMultipliers[hand];
+
+        if (ArtifactManager.Instance != null)
+        {
+            finalScore = ArtifactManager.Instance.ApplyScoreEffects(finalScore, hand, board);
+        }
+
+        return finalScore;
     }
 
     private static int GetHandScore(CardData[] rowCards, PokerHand hand)
@@ -173,6 +185,12 @@ public static class ScoringSystem
         {
             total += CalculateRowScore(board, row);
         }
+
+        if (ArtifactManager.Instance != null)
+        {
+            total = ArtifactManager.Instance.ApplyTotalScoreEffects(total, board);
+        }
+
         return total;
     }
 
