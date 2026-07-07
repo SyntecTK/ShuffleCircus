@@ -393,7 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactManager
   activeArtifacts: []
   allArtifacts: []
-  addTestArtifactOnStart: 1
+  addTestArtifactOnStart: 0
   testArtifact: {fileID: 11400000, guid: 751ddbf0f56d01541baeea9f0670fc48, type: 2}
 --- !u!4 &921479833
 Transform:
