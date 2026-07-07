@@ -5,6 +5,9 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameBoard _playerBoard;
     [SerializeField] private GameBoard _enemyBoard;
 
+    [SerializeField] private TooltipManager tooltip;
+    public TooltipManager Tooltip => tooltip;
+
     //-------------------------------- Unity Methods --------------------------------//
     private void Start()
     {
