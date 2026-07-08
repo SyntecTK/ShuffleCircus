@@ -31,6 +31,11 @@ public class GameManager : Singleton<GameManager>
         State.ResetSession();
     }
 
+    public void ResetBattleCounter()
+    {
+        currentBattleCount = 0;
+    }
+
     public void IncreaseBattleCounter()
     {
         if(currentBattleCount < MaxBattles)

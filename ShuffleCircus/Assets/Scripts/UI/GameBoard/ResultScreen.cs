@@ -129,13 +129,29 @@ public class ResultScreen : MonoBehaviour
         if (winText == null) return;
         _isPlayerWinner = isWinner;
         canClaimArtifact = _isPlayerWinner;
+        bool isFinalBattle = GameManager.Instance != null &&
+            GameManager.Instance.CurrentBattleCount >= GameManager.Instance.MaxBattlesAllowed;
+
+        nextButton.onClick.RemoveAllListeners();
+
+        if (isFinalBattle)
+        {
+            canClaimArtifact = false;
+            ClearArtifactSelections();
+            rewardText.text = "Thanks for playing";
+            winText.text = _isPlayerWinner ? "You Win!" : "You Lose!";
+            nextButton.gameObject.SetActive(false);
+            return;
+        }
+
+        nextButton.gameObject.SetActive(true);
+        nextButton.enabled = true;
 
         if(_isPlayerWinner)
         {
             FillArtifactSelections();
-            nextButton.onClick.RemoveAllListeners();
             winText.text = "You Win!";
-            if(GameManager.Instance.CurrentBattleCount < GameManager.Instance.MaxBattlesAllowed)
+            if (GameManager.Instance == null || GameManager.Instance.CurrentBattleCount < GameManager.Instance.MaxBattlesAllowed)
             {
                 nextButton.GetComponentInChildren<TMP_Text>().text = "Next Game";
                 nextButton.onClick.AddListener(StartNextGame);
@@ -148,7 +164,6 @@ public class ResultScreen : MonoBehaviour
         else
         {
             ClearArtifactSelections();
-            nextButton.onClick.RemoveAllListeners();
             winText.text = "You Lose!";
             nextButton.GetComponentInChildren<TMP_Text>().text = "Retry";
             nextButton.onClick.AddListener(RetryGame);
@@ -190,6 +205,7 @@ public class ResultScreen : MonoBehaviour
 
             DeckManager.Instance.ResetDecks();
             GameManager.Instance.State.IncreaseAIDifficultyLevel();
+            GameManager.Instance.IncreaseBattleCounter();
             SceneLoader.Instance.LoadScene("GameBoard");
         }
     }
