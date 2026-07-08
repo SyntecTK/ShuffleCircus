@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Gum
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
   icon: {fileID: 21300000, guid: b9e619ef0ab8097498f6b6f30e45125d, type: 3}
-  artifactID: gum
-  artifactName: Gum
+  artifactID: talisman
+  artifactName: Talisman
   description: Cards with the value 5 cant be stolen
   effect:
     rid: 7721194107453309127

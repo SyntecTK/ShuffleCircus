@@ -7,6 +7,7 @@ public class ArtifactDisplay : MonoBehaviour
 {
     private const int SlotCount = 3;
 
+    [SerializeField]private bool isPlayerDisplay = true;
     [Header("Fixed Display Slots (exactly 3)")]
     [SerializeField] private List<Image> slotImages = new List<Image>(SlotCount);
 
@@ -25,6 +26,7 @@ public class ArtifactDisplay : MonoBehaviour
 
     private Coroutine emptySlotAnimationRoutine;
 
+
     private void Awake()
     {
         CacheDefaultSlotVisuals();
@@ -40,6 +42,13 @@ public class ArtifactDisplay : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnAddedArtifact += UpdateArtifactList;
+
+        // Recover if serialized references changed and cached visuals are stale.
+        if (defaultSlotScales.Count < SlotCount || defaultSlotSprites.Count < SlotCount)
+        {
+            CacheDefaultSlotVisuals();
+        }
+
         StartEmptySlotAnimation();
     }
 
@@ -104,7 +113,7 @@ public class ArtifactDisplay : MonoBehaviour
                 }
 
                 Image slot = slotImages[i];
-                Vector3 baseScale = defaultSlotScales[i];
+                Vector3 baseScale = i < defaultSlotScales.Count ? defaultSlotScales[i] : Vector3.one;
 
                 if (HasArtifactIconAtSlot(i))
                 {
@@ -135,12 +144,14 @@ public class ArtifactDisplay : MonoBehaviour
                 continue;
             }
 
-            slotImages[i].rectTransform.localScale = defaultSlotScales[i];
+            Vector3 baseScale = i < defaultSlotScales.Count ? defaultSlotScales[i] : Vector3.one;
+            slotImages[i].rectTransform.localScale = baseScale;
         }
     }
 
     public void UpdateArtifactList()
     {
+        if(!isPlayerDisplay) return;
         activeArtifacts.Clear();
 
         if (ArtifactManager.Instance != null)
@@ -173,7 +184,7 @@ public class ArtifactDisplay : MonoBehaviour
             }
             else
             {
-                slot.sprite = defaultSlotSprites[i];
+                slot.sprite = i < defaultSlotSprites.Count ? defaultSlotSprites[i] : null;
             }
         }
 

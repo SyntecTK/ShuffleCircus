@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: StampCard
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
   icon: {fileID: 21300000, guid: ff3219ccbc580334296c0a8554aa365a, type: 3}
-  artifactID: stamp_card
-  artifactName: Stamp Card
+  artifactID: circus_mouse
+  artifactName: Circus Mouse
   description: Vertically placed cards can count as "Three of a kind"
   effect:
     rid: 7721194107453309128

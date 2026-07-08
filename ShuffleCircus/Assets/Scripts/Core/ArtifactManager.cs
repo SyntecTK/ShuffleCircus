@@ -18,7 +18,7 @@ public class ArtifactManager : Singleton<ArtifactManager>
     {
         ReloadAllArtifacts();
 
-        AddActiveArtifact(allArtifacts[0]);
+        //AddActiveArtifact(allArtifacts[0]);
     }
 
     public void ReloadAllArtifacts()

@@ -99,7 +99,7 @@ public class AIManager : MonoBehaviour
                 
                 if (legalMoves.Count == 0)
                 {
-                    Debug.Log("AI: No legal moves remaining this turn.");
+                    //Debug.Log("AI: No legal moves remaining this turn.");
                     break;
                 }
                 
@@ -108,11 +108,11 @@ public class AIManager : MonoBehaviour
 
                 if (ShouldStopPlayingThisTurn(aiCardsPlayedThisTurn, (int)bestMove.evaluationScore))
                 {
-                    Debug.Log($"AI: Choosing to hold after {aiCardsPlayedThisTurn} card(s) this turn.");
+                    //Debug.Log($"AI: Choosing to hold after {aiCardsPlayedThisTurn} card(s) this turn.");
                     break;
                 }
                 
-                Debug.Log($"AI: Playing move {bestMove}");
+                //Debug.Log($"AI: Playing move {bestMove}");
                 
                 // Step 11-12: Execute the move
                 if (!ExecuteMove(bestMove))
@@ -130,7 +130,7 @@ public class AIManager : MonoBehaviour
             
             if (isActiveAndEnabled && (GameManager.Instance == null || !GameManager.Instance.IsGameOver))
             {
-                Debug.Log("AI: Ending turn.");
+                //Debug.Log("AI: Ending turn.");
                 GameManager.Instance.EndTurn();
             }
         }
@@ -160,7 +160,7 @@ public class AIManager : MonoBehaviour
         
         if (aiHand == null || aiHand.Count == 0)
         {
-            Debug.Log("AI: No cards in hand.");
+            //Debug.Log("AI: No cards in hand.");
             return legalMoves;
         }
         
@@ -186,7 +186,7 @@ public class AIManager : MonoBehaviour
             }
         }
         
-        Debug.Log($"AI: Found {legalMoves.Count} legal moves ({aiHand.Count} cards × empty slots)");
+        //Debug.Log($"AI: Found {legalMoves.Count} legal moves ({aiHand.Count} cards × empty slots)");
         
         return legalMoves;
     }
@@ -248,7 +248,7 @@ public class AIManager : MonoBehaviour
         
         // Hard (3): optimal play with random tie-breaking among equally scored moves.
         AIMove chosen = bestMoves[UnityEngine.Random.Range(0, bestMoves.Count)];
-        Debug.Log($"AI: Best move score={bestScore}, chose {chosen}");
+        //Debug.Log($"AI: Best move score={bestScore}, chose {chosen}");
         return chosen;
     }
 
@@ -263,7 +263,7 @@ public class AIManager : MonoBehaviour
         }
 
         aiDifficultyLevel = Mathf.Clamp(state.AIDifficultyLevel, MinDifficulty, MaxDifficulty);
-        Debug.Log($"AI: Difficulty set to {aiDifficultyLevel}.");
+        //Debug.Log($"AI: Difficulty set to {aiDifficultyLevel}.");
     }
 
     private bool IsMultiplayerMode()
@@ -488,7 +488,7 @@ public class AIManager : MonoBehaviour
         // 7. Trigger UI refresh (scores, deck/discard counts)
         EventManager.BoardChanged();
         
-        Debug.Log($"AI: Move executed at ({move.row}, {move.col})");
+        //Debug.Log($"AI: Move executed at ({move.row}, {move.col})");
         return true;
     }
     

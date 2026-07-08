@@ -4,14 +4,27 @@ using TMPro;
 public class TooltipManager : MonoBehaviour
 {
     private TMP_Text textComponent;
-    private void Start()
+    private bool isVisible;
+
+    private void Awake()
     {
-        textComponent = GetComponentInChildren<TMP_Text>();
-        HideTooltip();
+        CacheReferences();
+
+        if (textComponent != null)
+        {
+            textComponent.text = string.Empty;
+        }
+
+        isVisible = gameObject.activeSelf;
     }
 
     void Update()
     {
+        if (!isVisible)
+        {
+            return;
+        }
+
         RectTransform parentRect = transform.parent as RectTransform;
         Canvas canvas = GetComponentInParent<Canvas>();
 
@@ -32,7 +45,16 @@ public class TooltipManager : MonoBehaviour
 
     public void ShowTooltip(string tooltipText)
     {
+        CacheReferences();
+
+        if (textComponent == null)
+        {
+            Debug.LogWarning("TooltipManager could not find a TMP_Text child.");
+            return;
+        }
+
         gameObject.SetActive(true);
+        isVisible = true;
         textComponent.text = tooltipText;
 
         textComponent.ForceMeshUpdate();
@@ -46,7 +68,25 @@ public class TooltipManager : MonoBehaviour
 
     public void HideTooltip()
     {
+        CacheReferences();
+
+        if (textComponent == null)
+        {
+            gameObject.SetActive(false);
+            isVisible = false;
+            return;
+        }
+
+        isVisible = false;
         gameObject.SetActive(false);
         textComponent.text = string.Empty;
+    }
+
+    private void CacheReferences()
+    {
+        if (textComponent == null)
+        {
+            textComponent = GetComponentInChildren<TMP_Text>(true);
+        }
     }
 }
