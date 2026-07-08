@@ -10,6 +10,7 @@ public class ResultScreen : MonoBehaviour
 
     [SerializeField] private TMP_Text winText;
     [SerializeField] private Button nextButton;
+    [SerializeField] private TMP_Text rewardText;
 
     [Header("Minimizing")]
     [SerializeField] private RectTransform resultPanel;
@@ -19,9 +20,11 @@ public class ResultScreen : MonoBehaviour
     [SerializeField] private GameObject selectionContainer;
     [SerializeField] private GameObject selectionPrefab;
     private ArtifactData selectedArtifact;
+    private bool canClaimArtifact;
 
     private float _originalHeight;
     private bool _isMinimized = false;
+    private bool _isPlayerWinner;
 
     void Start()
     {
@@ -30,18 +33,25 @@ public class ResultScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        FillArtifactSelections();
+        ClearArtifactSelections();  
     }
 
-
-    private void FillArtifactSelections()
+    private void ClearArtifactSelections()
     {
         selectedArtifact = null;
+        rewardText.text = "";
 
         for (int i = selectionContainer.transform.childCount - 1; i >= 0; i--)
         {
             Destroy(selectionContainer.transform.GetChild(i).gameObject);
         }
+    }
+
+    private void FillArtifactSelections()
+    {
+        ClearArtifactSelections();
+
+        rewardText.text = "Rewards (choose one):";
 
         if (ArtifactManager.Instance == null)
         {
@@ -101,11 +111,6 @@ public class ResultScreen : MonoBehaviour
         _uiContainer.SetActive(true);
     }
 
-    public void SetWinText()
-    {
-        
-    }
-
     public void ToggleResultPanel()
     {
         if (_isMinimized)
@@ -119,34 +124,78 @@ public class ResultScreen : MonoBehaviour
         _isMinimized = !_isMinimized;
     }
 
-    public void SetWinner(bool isPlayerWinner)
+    public void SetWinner(bool isWinner)
     {
         if (winText == null) return;
-        if(isPlayerWinner)
+        _isPlayerWinner = isWinner;
+        canClaimArtifact = _isPlayerWinner;
+
+        if(_isPlayerWinner)
         {
+            FillArtifactSelections();
             nextButton.onClick.RemoveAllListeners();
             winText.text = "You Win!";
-            nextButton.GetComponentInChildren<TMP_Text>().text = "Next Game";
-            nextButton.onClick.AddListener(StartNextGame);
+            if(GameManager.Instance.CurrentBattleCount < GameManager.Instance.MaxBattlesAllowed)
+            {
+                nextButton.GetComponentInChildren<TMP_Text>().text = "Next Game";
+                nextButton.onClick.AddListener(StartNextGame);
+            }
+            else
+            {
+                nextButton.enabled = false;
+            }
         }
         else
         {
+            ClearArtifactSelections();
             nextButton.onClick.RemoveAllListeners();
             winText.text = "You Lose!";
             nextButton.GetComponentInChildren<TMP_Text>().text = "Retry";
-            nextButton.onClick.AddListener(() => SceneLoader.Instance.LoadScene("GameBoard"));
+            nextButton.onClick.AddListener(RetryGame);
             
         }
     }
 
+    private void RetryGame()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetPlayerTurn(true);
+        }
+
+        if (DeckManager.Instance != null)
+        {
+            DeckManager.Instance.ResetDecks();
+        }
+
+        SceneLoader.Instance.LoadScene("GameBoard");
+    }
+
     public void StartNextGame()
     {
+        if (!canClaimArtifact)
+        {
+            RetryGame();
+            return;
+        }
+
         if (selectedArtifact != null)
         {
             ArtifactManager.Instance.AddActiveArtifact(selectedArtifact);
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SetPlayerTurn(true);
+            }
+
             DeckManager.Instance.ResetDecks();
             GameManager.Instance.State.IncreaseAIDifficultyLevel();
             SceneLoader.Instance.LoadScene("GameBoard");
         }
+    }
+
+    public void QuitToMainMenu()
+    {
+        SceneLoader.Instance.LoadScene("MainMenu");
     }
 }

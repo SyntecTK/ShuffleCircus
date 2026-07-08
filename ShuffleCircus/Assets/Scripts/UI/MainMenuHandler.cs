@@ -9,6 +9,8 @@ public class MainMenuHandler : MonoBehaviour
     public void StartGameSolo()
     {
         GameManager.Instance.State.SetGameMode(GameMode.Singleplayer);
+        ArtifactManager.Instance.ClearActiveArtifacts();
+        DeckManager.Instance.ResetDecks();
         SceneManager.LoadScene("GameBoard");
     }
 

@@ -4,6 +4,10 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     private const int MaxCardsPerTurn = 4;
+    private const int MaxBattles = 3;
+    private int currentBattleCount = 0;
+    public int CurrentBattleCount => currentBattleCount;
+    public int MaxBattlesAllowed => MaxBattles;
 
     [SerializeField] private GameState gameState;
     [SerializeField] private bool isPlayerTurn = true;
@@ -25,6 +29,14 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         State.ResetSession();
+    }
+
+    public void IncreaseBattleCounter()
+    {
+        if(currentBattleCount < MaxBattles)
+        {
+            currentBattleCount++;
+        }
     }
 
     public void EndTurn()

@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 public class AIManager : MonoBehaviour
 {
-    private const int MinDifficulty = 1;
+    private const int MinDifficulty = 2;
     private const int MaxDifficulty = 3;
     private const float OpeningPhaseFillThreshold = 0.45f;
 
@@ -23,7 +23,7 @@ public class AIManager : MonoBehaviour
     private HandManager handManager;
     private GameBoard playerBoard;
     private GameBoard opponentBoard;
-    private int aiDifficultyLevel = 1;
+    private int aiDifficultyLevel = MinDifficulty;
     
     // === STATE ===
     private bool isAIThinking = false;  // Reentrancy guard: prevent overlapping AI turns
