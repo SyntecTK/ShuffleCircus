@@ -110,6 +110,31 @@ public class HandDisplay : MonoBehaviour
         }
     }
 
+    public void RefreshHandCardVisuals(IReadOnlyList<RectTransform> cards)
+    {
+        if (cards == null || cardSpriteDataBase == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            RectTransform card = cards[i];
+            if (card == null)
+            {
+                continue;
+            }
+
+            CardData cardData = card.GetComponent<CardData>();
+            if (cardData == null)
+            {
+                continue;
+            }
+
+            ApplyCardVisual(card, cardData.Identity, i);
+        }
+    }
+
     private void ApplyCardVisual(RectTransform cardInstance, CardIdentity drawnCard, int index)
     {
         if (cardInstance == null)

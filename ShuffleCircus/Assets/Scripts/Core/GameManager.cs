@@ -20,6 +20,8 @@ public class GameManager : Singleton<GameManager>
     public int MaxCardsAllowedPerTurn => MaxCardsPerTurn;
     public int CardsRemainingThisTurn => MaxCardsPerTurn - cardsPlayedThisTurn;
 
+    private bool playerIsWinner;
+
     private void Start()
     {
         State.ResetSession();

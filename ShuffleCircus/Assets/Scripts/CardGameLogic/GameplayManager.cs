@@ -12,6 +12,12 @@ public class GameplayManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.SetPlayerTurn(true);
+
+        HandManager handManager = FindFirstObjectByType<HandManager>();
+        if (handManager != null)
+        {
+            handManager.RefreshHandVisuals();
+        }
     }
 
     private void OnEnable()

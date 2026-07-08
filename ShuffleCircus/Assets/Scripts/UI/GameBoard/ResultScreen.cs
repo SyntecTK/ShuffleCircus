@@ -8,6 +8,9 @@ public class ResultScreen : MonoBehaviour
 {
     private const int selectionSlots = 2;
 
+    [SerializeField] private TMP_Text winText;
+    [SerializeField] private Button nextButton;
+
     [Header("Minimizing")]
     [SerializeField] private RectTransform resultPanel;
     [SerializeField] private GameObject _uiContainer;
@@ -98,6 +101,11 @@ public class ResultScreen : MonoBehaviour
         _uiContainer.SetActive(true);
     }
 
+    public void SetWinText()
+    {
+        
+    }
+
     public void ToggleResultPanel()
     {
         if (_isMinimized)
@@ -111,15 +119,34 @@ public class ResultScreen : MonoBehaviour
         _isMinimized = !_isMinimized;
     }
 
+    public void SetWinner(bool isPlayerWinner)
+    {
+        if (winText == null) return;
+        if(isPlayerWinner)
+        {
+            nextButton.onClick.RemoveAllListeners();
+            winText.text = "You Win!";
+            nextButton.GetComponentInChildren<TMP_Text>().text = "Next Game";
+            nextButton.onClick.AddListener(StartNextGame);
+        }
+        else
+        {
+            nextButton.onClick.RemoveAllListeners();
+            winText.text = "You Lose!";
+            nextButton.GetComponentInChildren<TMP_Text>().text = "Retry";
+            nextButton.onClick.AddListener(() => SceneLoader.Instance.LoadScene("GameBoard"));
+            
+        }
+    }
+
     public void StartNextGame()
     {
         if (selectedArtifact != null)
         {
             ArtifactManager.Instance.AddActiveArtifact(selectedArtifact);
+            DeckManager.Instance.ResetDecks();
+            GameManager.Instance.State.IncreaseAIDifficultyLevel();
+            SceneLoader.Instance.LoadScene("GameBoard");
         }
-
-        DeckManager.Instance.ResetDecks();
-        GameManager.Instance.State.IncreaseAIDifficultyLevel();
-        SceneLoader.Instance.LoadScene("GameBoard");
     }
 }

@@ -80,6 +80,16 @@ public class HandManager : MonoBehaviour
         handDisplay.ArrangeCards(handCards, handSize);
     }
 
+    public void RefreshHandVisuals()
+    {
+        if (handDisplay == null)
+        {
+            return;
+        }
+
+        handDisplay.RefreshHandCardVisuals(handCards);
+    }
+
     /// <summary>
     /// Returns the actual CardData objects currently in hand (for AI evaluation, etc.)
     /// </summary>

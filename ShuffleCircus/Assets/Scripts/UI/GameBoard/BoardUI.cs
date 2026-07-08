@@ -61,6 +61,8 @@ public class BoardUI : MonoBehaviour
     private void ShowResultScreen()
     {
         _resultScreen.SetActive(true);
+        bool playerisWinner = ScoringSystem.CalculateTotalScore(_playerBoard) > ScoringSystem.CalculateTotalScore(_enemyBoard);
+        _resultScreen.GetComponent<ResultScreen>().SetWinner(playerisWinner);
     }
 
     public void UpdateBoardUI()
@@ -84,16 +86,18 @@ public class BoardUI : MonoBehaviour
         {
             if(GameManager.Instance.IsPlayerTurn)
             {
-                _cardsPlayerPlayedThisTurnText.text = (GameManager.Instance.MaxCardsAllowedPerTurn - GameManager.Instance.CardsPlayedThisTurn).ToString();
+                _cardsPlayerPlayedThisTurnText.text = GameManager.Instance.CardsRemainingThisTurn.ToString();
             }
             else
             {
-                _cardsPlayer2PlayedThisTurnText.text = (GameManager.Instance.MaxCardsAllowedPerTurn - GameManager.Instance.CardsPlayedThisTurn).ToString();
+                _cardsPlayer2PlayedThisTurnText.text = GameManager.Instance.CardsRemainingThisTurn.ToString();
             }
         }
         else
         {
-            _cardsPlayerPlayedThisTurnText.text = (GameManager.Instance.MaxCardsAllowedPerTurn - GameManager.Instance.CardsPlayedThisTurn).ToString();
+            _cardsPlayerPlayedThisTurnText.text = GameManager.Instance.IsPlayerTurn
+                ? GameManager.Instance.CardsRemainingThisTurn.ToString()
+                : GameManager.Instance.MaxCardsAllowedPerTurn.ToString();
         }
     }
 

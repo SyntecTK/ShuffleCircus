@@ -38,7 +38,7 @@ public class TooltipManager : MonoBehaviour
             uiCamera,
             out Vector3 worldPoint))
         {
-            Vector3 offset = new Vector3(17f, -15f, 0f);
+            Vector3 offset = new Vector3(17f, -10f, 0f);
             transform.position = worldPoint + offset;
         }
     }

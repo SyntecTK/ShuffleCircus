@@ -52,6 +52,11 @@ public class ArtifactManager : Singleton<ArtifactManager>
 
     public int ApplyScoreEffects(int currentScore, PokerHand hand, GameBoard board)
     {
+        if (board == null || !board.IsPlayerBoard)
+        {
+            return currentScore;
+        }
+
         int modifiedScore = currentScore;
 
         foreach (ArtifactData artifact in activeArtifacts)
@@ -69,6 +74,11 @@ public class ArtifactManager : Singleton<ArtifactManager>
 
     public int ApplyTotalScoreEffects(int currentTotalScore, GameBoard board)
     {
+        if (board == null || !board.IsPlayerBoard)
+        {
+            return currentTotalScore;
+        }
+
         int modifiedTotalScore = currentTotalScore;
 
         foreach (ArtifactData artifact in activeArtifacts)
@@ -86,6 +96,11 @@ public class ArtifactManager : Singleton<ArtifactManager>
 
     public bool CanCardBeStolen(CardData targetCard, int stolenRank, GameBoard targetBoard)
     {
+        if (targetBoard == null || !targetBoard.IsPlayerBoard)
+        {
+            return true;
+        }
+
         foreach (ArtifactData artifact in activeArtifacts)
         {
             if (artifact == null || artifact.Effect == null)
