@@ -12,7 +12,6 @@ public class MainMenuHandler : MonoBehaviour
         ArtifactManager.Instance.ClearActiveArtifacts();
         DeckManager.Instance.ResetDecks();
         GameManager.Instance.ResetBattleCounter();
-        GameManager.Instance.IncreaseBattleCounter();
         GameManager.Instance.State.SetAIDifficultyLevel(1);
         SceneManager.LoadScene("GameBoard");
     }

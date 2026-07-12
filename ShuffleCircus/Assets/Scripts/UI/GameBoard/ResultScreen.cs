@@ -215,3 +215,4 @@ public class ResultScreen : MonoBehaviour
         SceneLoader.Instance.LoadScene("MainMenu");
     }
 }
+

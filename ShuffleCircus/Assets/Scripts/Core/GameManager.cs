@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
 
     public void IncreaseBattleCounter()
     {
-        if(currentBattleCount < MaxBattles)
+        if (currentBattleCount < MaxBattles)
         {
             currentBattleCount++;
         }
