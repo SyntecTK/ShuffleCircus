@@ -27,6 +27,16 @@ public class MainMenuHandler : MonoBehaviour
         Debug.Log("TODO");
     }
 
+    public void OpenDiscord()
+    {
+        Application.OpenURL("https://discord.gg/WMEX29QcE");
+    }
+
+    public void OpenFeedbackFormular()
+    {
+
+    }
+
     public void ExitGame()
     {
         Application.Quit();
