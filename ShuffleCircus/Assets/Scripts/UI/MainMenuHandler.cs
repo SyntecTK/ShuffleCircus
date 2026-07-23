@@ -13,7 +13,7 @@ public class MainMenuHandler : MonoBehaviour
         DeckManager.Instance.ResetDecks();
         GameManager.Instance.ResetBattleCounter();
         GameManager.Instance.State.SetAIDifficultyLevel(1);
-        SceneManager.LoadScene("GameBoard");
+        SceneManager.LoadScene("Map");
     }
 
     public void StartGameMultiplayer()
@@ -34,7 +34,7 @@ public class MainMenuHandler : MonoBehaviour
 
     public void OpenFeedbackFormular()
     {
-
+        Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSc7xMaxTgi1FGNSY-f8XovB5rBEURyU30VkiExLBqsuF_Qypg/viewform?usp=publish-editor");
     }
 
     public void ExitGame()
