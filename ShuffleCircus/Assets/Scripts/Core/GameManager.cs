@@ -26,6 +26,35 @@ public class GameManager : Singleton<GameManager>
 
     private bool playerIsWinner;
 
+    //---------------------------Tent Progress----------------------------------
+    public int SelectedEventFieldID {get; set;} = -1;
+    private const int progressSteps = 4;
+    private int[] progresses = new int[progressSteps];
+
+    public void IncreaseTentProgress(int eventID)
+    {
+        if (progresses == null || eventID < 0 || eventID >= progresses.Length)
+        {
+            Debug.LogWarning("Invalid event ID or progresses array not initialized.");
+            return;
+        }
+
+        progresses[eventID]++;
+    }
+
+    public int GetTentProgress(int eventID)
+    {
+        if (progresses == null || eventID < 0 || eventID >= progresses.Length)
+        {
+            Debug.LogWarning("Invalid event ID or progresses array not initialized.");
+            return 0;
+        }
+
+        return progresses[eventID];
+    }
+
+    
+
     private void Start()
     {
         State.ResetSession();
@@ -34,6 +63,7 @@ public class GameManager : Singleton<GameManager>
     public void ResetBattleCounter()
     {
         currentBattleCount = 0;
+        PlayerPrefs.SetInt("CurrentBattleCount", currentBattleCount);
     }
 
     public void IncreaseBattleCounter()

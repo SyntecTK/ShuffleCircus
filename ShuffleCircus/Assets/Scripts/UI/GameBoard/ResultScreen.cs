@@ -1,6 +1,7 @@
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
 
@@ -140,7 +141,7 @@ public class ResultScreen : MonoBehaviour
             ClearArtifactSelections();
             rewardText.text = "Thanks for playing";
             winText.text = _isPlayerWinner ? "You Win!" : "You Lose!";
-            nextButton.gameObject.SetActive(false);
+            nextButton.onClick.AddListener(LoadMap);
             return;
         }
 
@@ -150,6 +151,7 @@ public class ResultScreen : MonoBehaviour
         if(_isPlayerWinner)
         {
             FillArtifactSelections();
+            GameManager.Instance.IncreaseTentProgress(GameManager.Instance.SelectedEventFieldID);
             winText.text = "You Win!";
             if (GameManager.Instance == null || GameManager.Instance.CurrentBattleCount < GameManager.Instance.MaxBattlesAllowed)
             {
@@ -206,6 +208,7 @@ public class ResultScreen : MonoBehaviour
             DeckManager.Instance.ResetDecks();
             GameManager.Instance.State.IncreaseAIDifficultyLevel();
             GameManager.Instance.IncreaseBattleCounter();
+            GameManager.Instance.IncreaseTentProgress(GameManager.Instance.SelectedEventFieldID);
             SceneLoader.Instance.LoadScene("GameBoard");
         }
     }
@@ -213,6 +216,71 @@ public class ResultScreen : MonoBehaviour
     public void QuitToMainMenu()
     {
         SceneLoader.Instance.LoadScene("MainMenu");
+    }
+
+    // Unload the additively loaded GameBoard scene and return to the underlying map scene.
+    // Called by nextButton in final-battle flow (see where LoadMap is added as listener).
+    public void LoadMap()
+    {
+        // If GameBoard was loaded additively from the map, unload it and when finished
+        // re-enable the EventSystem and map raycasters so the map UI is interactive again.
+        Scene scene = SceneManager.GetSceneByName("GameBoard");
+        if (scene.IsValid() && scene.isLoaded)
+        {
+            AsyncOperation op = SceneManager.UnloadSceneAsync("GameBoard");
+            if (op != null)
+            {
+                op.completed += _ => OnMapReturned();
+            }
+            else
+            {
+                // If unload failed to return an AsyncOperation, try a direct re-enable fallback.
+                OnMapReturned();
+            }
+        }
+        else
+        {
+            // If GameBoard isn't loaded, still ensure map interactivity.
+            OnMapReturned();
+        }
+
+        // Clear selected event so map doesn't keep stale selection.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SelectedEventFieldID = -1;
+        }
+    }
+
+    private void OnMapReturned()
+    {
+        // Re-enable EventSystem and GraphicRaycasters in all loaded scenes.
+        // Note: GameObject.Find doesn't return inactive objects, so we iterate root
+        // objects of each loaded scene to find the EventSystem even if it's inactive.
+        int sceneCount = SceneManager.sceneCount;
+        for (int s = 0; s < sceneCount; s++)
+        {
+            var scene = SceneManager.GetSceneAt(s);
+            if (!scene.IsValid()) continue;
+
+            var roots = scene.GetRootGameObjects();
+            foreach (var root in roots)
+            {
+                // Find and enable EventSystem (by name) even if it's inactive.
+                if (root.name == "EventSystem")
+                {
+                    if (!root.activeInHierarchy)
+                        root.SetActive(true);
+                }
+
+                // Re-enable all GraphicRaycasters under this root (including inactive ones).
+                var raycasters = root.GetComponentsInChildren<UnityEngine.UI.GraphicRaycaster>(true);
+                foreach (var r in raycasters)
+                {
+                    if (r != null && !r.enabled)
+                        r.enabled = true;
+                }
+            }
+        }
     }
 }
 
