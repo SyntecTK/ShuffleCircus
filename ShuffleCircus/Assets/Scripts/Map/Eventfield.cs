@@ -12,6 +12,7 @@ public class Eventfield : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private GameObject tentProgressUI;
     private Image[] tentProgressSteps;
     private GameObject stepsContainer;
+    private int currentProgressStep = 0;
 
 
     private void Start()
@@ -19,8 +20,10 @@ public class Eventfield : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         eventSystem = GameObject.Find("EventSystem");
         mapRaycaster = GetComponentInParent<GraphicRaycaster>();
         tentProgressUI = transform.GetChild(0).gameObject;
-        var allImages = tentProgressUI.GetComponentsInChildren<Image>();
-        tentProgressSteps = allImages.Where(img => img.gameObject != tentProgressUI).ToArray();
+        var allImages = tentProgressUI.GetComponentsInChildren<Image>(true);
+        // Keep only top-level step images. This excludes child/icon images whose parent
+        // already has an Image component so they won't be recolored when we update steps.
+        tentProgressSteps = allImages.Where(img => img.transform.parent == tentProgressUI.transform).ToArray();
 
         if (eventSystem != null && !eventSystem.activeInHierarchy)
         {
@@ -75,18 +78,24 @@ public class Eventfield : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private void UpdateTentProgressUI()
     {
         int progress = GameManager.Instance.GetTentProgress(eventID);
-
+        Debug.Log(progress);
         for (int i = 0; i < tentProgressSteps.Length; i++)
         {
+            if (tentProgressSteps[i].transform.childCount > 0)
+                tentProgressSteps[i].transform.GetChild(0).gameObject.SetActive(false);
+
             if (i < progress)
             {
-                tentProgressSteps[i].color = Color.green; // Filled step
+                tentProgressSteps[i].color = Color.green;
             }
             else
             {
-                tentProgressSteps[i].color = Color.gray; // Empty step
+                tentProgressSteps[i].color = Color.gray;
             }
         }
+        tentProgressSteps[progress].color = Color.yellow;
+        if(tentProgressSteps[progress].transform.childCount > 0)
+            tentProgressSteps[progress].transform.GetChild(0).gameObject.SetActive(true);
     }
 
 //-------------------- Interface Implementations --------------------//
