@@ -9,9 +9,11 @@ public class ResultScreen : MonoBehaviour
 {
     private const int selectionSlots = 2;
 
+    [Header("References")]
     [SerializeField] private TMP_Text winText;
-    [SerializeField] private Button nextButton;
     [SerializeField] private TMP_Text rewardText;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button mapButton;
 
     [Header("Minimizing")]
     [SerializeField] private RectTransform resultPanel;
@@ -97,6 +99,11 @@ public class ResultScreen : MonoBehaviour
     public void SelectArtifact(ArtifactData artifact)
     {
         selectedArtifact = artifact;
+        if(!nextButton.gameObject.activeSelf && !mapButton.gameObject.activeSelf)
+        {
+            nextButton.gameObject.SetActive(true);
+            mapButton.gameObject.SetActive(true);
+        }
     }
 
     private void Minimize()
@@ -141,12 +148,9 @@ public class ResultScreen : MonoBehaviour
             ClearArtifactSelections();
             rewardText.text = "Thanks for playing";
             winText.text = _isPlayerWinner ? "You Win!" : "You Lose!";
-            nextButton.onClick.AddListener(LoadMap);
+            nextButton.onClick.AddListener(QuitToMainMenu);
             return;
         }
-
-        nextButton.gameObject.SetActive(true);
-        nextButton.enabled = true;
 
         if(_isPlayerWinner)
         {
@@ -244,6 +248,8 @@ public class ResultScreen : MonoBehaviour
             OnMapReturned();
         }
 
+        DeckManager.Instance.ResetDecks();
+        ArtifactManager.Instance.AddActiveArtifact(selectedArtifact);
         // Clear selected event so map doesn't keep stale selection.
         if (GameManager.Instance != null)
         {

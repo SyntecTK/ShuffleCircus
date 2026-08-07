@@ -9,6 +9,7 @@ public class BoardUI : MonoBehaviour
 
     [Header("Screens")]
     [SerializeField] private GameObject _resultScreen;
+    [SerializeField] private GameObject _cheatSheet;
 
     [Header("Objects")]
     [SerializeField] private GameObject _player2CardsPlayedDisplay;
@@ -125,5 +126,11 @@ public class BoardUI : MonoBehaviour
             GameManager.Instance.EndTurn();
             EventManager.BoardChanged();
         }
+    }
+
+    public void ToggleCheatSheet()
+    {
+        bool active = _cheatSheet.activeSelf;
+        _cheatSheet.SetActive(active ? false : true);
     }
 }
