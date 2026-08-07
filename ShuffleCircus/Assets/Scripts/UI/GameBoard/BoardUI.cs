@@ -130,7 +130,6 @@ public class BoardUI : MonoBehaviour
 
     public void ToggleCheatSheet()
     {
-        bool active = _cheatSheet.activeSelf;
-        _cheatSheet.SetActive(active ? false : true);
+        _cheatSheet.SetActive(_cheatSheet.activeSelf ? false : true);
     }
 }
