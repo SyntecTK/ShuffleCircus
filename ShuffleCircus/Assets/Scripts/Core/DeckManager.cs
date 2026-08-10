@@ -112,6 +112,11 @@ public class DeckManager : Singleton<DeckManager>
         return isPlayer ? playerDiscardPile.Count : opponentDiscardPile.Count;
     }
 
+    public List<CardIdentity> GetDiscardPile(bool isPlayer)
+    {
+        return isPlayer ? playerDiscardPile : opponentDiscardPile;
+    }
+
     public void ResetDecks()
     {
         isInitialized = false;

@@ -60,8 +60,8 @@ public class HandDisplay : MonoBehaviour
             return null;
         }
 
-        RectTransform cardInstance = Instantiate(cardPrefab, parent);
-        ApplyCardVisual(cardInstance, card, index);
+        bool showFace = GameManager.Instance.IsPlayerTurn || GameManager.Instance.State.GameMode == GameMode.Multiplayer;
+        RectTransform cardInstance = CardViewFactory.CreateCardView(cardPrefab, parent, card, cardSpriteDataBase, showFace);
         return cardInstance;
     }
 
@@ -137,36 +137,8 @@ public class HandDisplay : MonoBehaviour
 
     private void ApplyCardVisual(RectTransform cardInstance, CardIdentity drawnCard, int index)
     {
-        if (cardInstance == null)
-        {
-            return;
-        }
-
-        CardData cardData = cardInstance.GetComponent<CardData>();
-        if (cardData == null)
-        {
-            cardInstance.name = $"Card_{index}";
-            Debug.LogWarning("Spawned card is missing the CardData component.");
-            return;
-        }
-
-        cardData.SetCard(drawnCard);
-        cardInstance.name = $"Card_{drawnCard.rank}_of_{drawnCard.suit}";
-
-        Image cardImage = cardInstance.GetComponentInChildren<Image>();
-        Sprite sprite = cardSpriteDataBase != null ? cardSpriteDataBase.GetSprite(drawnCard) : null;
-
-        if (cardImage != null && sprite != null)
-        {
-            if(GameManager.Instance.IsPlayerTurn || GameManager.Instance.State.GameMode == GameMode.Multiplayer)
-            {
-                cardImage.sprite = sprite;
-            }
-            else
-            {
-                cardImage.sprite = cardSpriteDataBase.GetEnemyBackSprite();
-            }
-        }
+        bool showFace = GameManager.Instance.IsPlayerTurn || GameManager.Instance.State.GameMode == GameMode.Multiplayer;
+        CardViewFactory.ApplyCardVisual(cardInstance, drawnCard, cardSpriteDataBase, showFace);
     }
 
     private List<RectTransform> GetActiveCards(IReadOnlyList<RectTransform> cards)
