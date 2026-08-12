@@ -13,7 +13,7 @@ public class ResultScreen : MonoBehaviour
     [SerializeField] private TMP_Text winText;
     [SerializeField] private TMP_Text rewardText;
     [SerializeField] private Button nextButton;
-    [SerializeField] private Button mapButton;
+    //[SerializeField] private Button mapButton;
 
     [Header("Minimizing")]
     [SerializeField] private RectTransform resultPanel;
@@ -28,6 +28,7 @@ public class ResultScreen : MonoBehaviour
     private float _originalHeight;
     private bool _isMinimized = false;
     private bool _isPlayerWinner;
+    private bool _isAdvancingToNextGame = false;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class ResultScreen : MonoBehaviour
 
     private void OnEnable()
     {
+        _isAdvancingToNextGame = false;
         ClearArtifactSelections();  
     }
 
@@ -99,10 +101,10 @@ public class ResultScreen : MonoBehaviour
     public void SelectArtifact(ArtifactData artifact)
     {
         selectedArtifact = artifact;
-        if(!nextButton.gameObject.activeSelf && !mapButton.gameObject.activeSelf)
+        if(!nextButton.gameObject.activeSelf)
         {
             nextButton.gameObject.SetActive(true);
-            mapButton.gameObject.SetActive(true);
+            //mapButton.gameObject.SetActive(true);
         }
     }
 
@@ -137,6 +139,8 @@ public class ResultScreen : MonoBehaviour
         if (winText == null) return;
         _isPlayerWinner = isWinner;
         canClaimArtifact = _isPlayerWinner;
+        _isAdvancingToNextGame = false;
+        nextButton.interactable = true;
         bool isFinalBattle = GameManager.Instance != null &&
             GameManager.Instance.CurrentBattleCount >= GameManager.Instance.MaxBattlesAllowed;
 
@@ -200,8 +204,16 @@ public class ResultScreen : MonoBehaviour
             return;
         }
 
+        // Guard against double invocation (e.g. double-click while the scene is still loading),
+        // which previously caused AIDifficultyLevel / battle counter / tent progress to be
+        // incremented more than once for a single "next game" transition.
+        if (_isAdvancingToNextGame) return;
+
         if (selectedArtifact != null)
         {
+            _isAdvancingToNextGame = true;
+            nextButton.interactable = false;
+
             ArtifactManager.Instance.AddActiveArtifact(selectedArtifact);
 
             if (GameManager.Instance != null)
@@ -212,7 +224,8 @@ public class ResultScreen : MonoBehaviour
             DeckManager.Instance.ResetDecks();
             GameManager.Instance.State.IncreaseAIDifficultyLevel();
             GameManager.Instance.IncreaseBattleCounter();
-            GameManager.Instance.IncreaseTentProgress(GameManager.Instance.SelectedEventFieldID);
+            // Note: tent progress for this win is already increased in SetWinner(); do not
+            // increase it again here.
             SceneLoader.Instance.LoadScene("GameBoard");
         }
     }

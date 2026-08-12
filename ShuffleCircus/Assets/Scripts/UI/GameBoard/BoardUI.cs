@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class BoardUI : MonoBehaviour
 {
@@ -10,9 +12,7 @@ public class BoardUI : MonoBehaviour
     [Header("Screens")]
     [SerializeField] private GameObject _resultScreen;
     [SerializeField] private GameObject _cheatSheet;
-
-    [Header("Objects")]
-    [SerializeField] private GameObject _player2CardsPlayedDisplay;
+    [SerializeField] private RectTransform _cheatSheetContent;
 
     [Header("TextFields")]
     [SerializeField] private TMP_Text _playerScoreText;
@@ -28,20 +28,13 @@ public class BoardUI : MonoBehaviour
     [SerializeField] private TMP_Text _enemyDeckAmountText;
     [SerializeField] private TMP_Text _enemyDiscardAmountText;
     [SerializeField] private TMP_Text _cardsPlayerPlayedThisTurnText;
-    [SerializeField] private TMP_Text _cardsPlayer2PlayedThisTurnText;
+
+    [Header("Debug")]
+    [SerializeField] private TMP_Text cpuLvlText;
 
     private void Start()
     {
         UpdateBoardUI();
-        if(GameManager.Instance.State.GameMode == GameMode.Multiplayer)
-        {
-            _player2CardsPlayedDisplay.SetActive(true);
-        }
-        else
-        {
-            _player2CardsPlayedDisplay.SetActive(false);
-        }
-
     }
 
 
@@ -83,15 +76,13 @@ public class BoardUI : MonoBehaviour
         _enemyDeckAmountText.text = DeckManager.Instance.GetDeckCount(false).ToString();
         _enemyDiscardAmountText.text = DeckManager.Instance.GetDiscardCount(false).ToString();
 
+        cpuLvlText.text = GameManager.Instance.State.AIDifficultyLevel.ToString();
+
         if(GameManager.Instance.State.GameMode == GameMode.Multiplayer)
         {
             if(GameManager.Instance.IsPlayerTurn)
             {
                 _cardsPlayerPlayedThisTurnText.text = GameManager.Instance.CardsRemainingThisTurn.ToString();
-            }
-            else
-            {
-                _cardsPlayer2PlayedThisTurnText.text = GameManager.Instance.CardsRemainingThisTurn.ToString();
             }
         }
         else
@@ -131,5 +122,47 @@ public class BoardUI : MonoBehaviour
     public void ToggleCheatSheet()
     {
         _cheatSheet.SetActive(_cheatSheet.activeSelf ? false : true);
+    }
+
+    private void Update()
+    {
+        if (_cheatSheet != null && _cheatSheet.activeSelf && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            if (!IsPointerOverCheatSheetContent())
+            {
+                _cheatSheet.SetActive(false);
+            }
+        }
+    }
+
+    private bool IsPointerOverCheatSheetContent()
+    {
+        if (EventSystem.current == null)
+        {
+            return false;
+        }
+
+        Transform contentTransform = _cheatSheetContent != null
+            ? _cheatSheetContent.transform
+            : _cheatSheet.transform;
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Mouse.current.position.ReadValue()
+        };
+
+        var raycastResults = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, raycastResults);
+
+        foreach (RaycastResult result in raycastResults)
+        {
+            if (result.gameObject.transform == contentTransform ||
+                result.gameObject.transform.IsChildOf(contentTransform))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -1025,7 +1025,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2100801641}
         m_TargetAssemblyTypeName: MainMenuHandler, Assembly-CSharp
-        m_MethodName: StartGameSolo
+        m_MethodName: OpenDiscord
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

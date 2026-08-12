@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class MainMenuHandler : MonoBehaviour
 {
-    [SerializeField] private InputField playerNameInput;
-
     public void StartGameSolo()
     {
         GameManager.Instance.State.SetGameMode(GameMode.Singleplayer);
@@ -13,7 +11,7 @@ public class MainMenuHandler : MonoBehaviour
         DeckManager.Instance.ResetDecks();
         GameManager.Instance.ResetBattleCounter();
         GameManager.Instance.State.SetAIDifficultyLevel(1);
-        SceneManager.LoadScene("Map");
+        SceneManager.LoadScene("Intro");
     }
 
     public void StartGameMultiplayer()

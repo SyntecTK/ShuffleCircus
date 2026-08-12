@@ -19,11 +19,13 @@ public class DiscardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     void OnEnable()
     {
         EventManager.OnTurnEnded += UpdateDiscards;
+        EventManager.OnCardStolen += UpdateDiscards;
     }
 
     void OnDisable()
     {
         EventManager.OnTurnEnded -= UpdateDiscards;
+        EventManager.OnCardStolen -= UpdateDiscards;
     }
 
     private void UpdateDiscards()

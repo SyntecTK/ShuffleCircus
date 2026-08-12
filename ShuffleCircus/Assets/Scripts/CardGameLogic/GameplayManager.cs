@@ -88,6 +88,7 @@ public class GameplayManager : MonoBehaviour
             DeckManager.Instance.AddToDiscard(targetCard.Identity, playedByPlayer);
             Destroy(targetCard.gameObject);
         }
+        EventManager.CardStolen();
     }
 
     //------------------------------- Getters -------------------------------//

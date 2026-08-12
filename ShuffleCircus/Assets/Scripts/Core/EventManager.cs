@@ -10,6 +10,8 @@ public static class EventManager
     public static event Action OnHandDrawStarted;
     public static event Action OnDrawnHand;
 
+    public static event Action OnCardStolen;
+
     //----------Artifacts-----------------
     public static event Action OnAddedArtifact;
 
@@ -42,6 +44,11 @@ public static class EventManager
     public static void DrawnHand()
     {
         OnDrawnHand?.Invoke();
+    }
+
+    public static void CardStolen()
+    {
+        OnCardStolen?.Invoke();
     }
 
     //--------- Artifact Methods----------
