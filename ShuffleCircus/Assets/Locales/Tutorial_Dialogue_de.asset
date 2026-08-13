@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorial_Dialogue_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 37b25b16a7f8ebd4587edf573bbd7769, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 26544250880
+    m_Localized: Wilkommen zur Demo von Shuffle Circus!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1220310278144
+    m_Localized: "Du wirst gleich drei Runden spielen und am Ende jeder Runde Artefakte
+      sammeln, um immer mehr Punkte machen zu k\xF6nnen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3170703581184
+    m_Localized: "Zu Beginn gibt es kurz die Spielregeln im \xDCberblick."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4007614029824
+    m_Localized: Du und deine Gegner:innen haben jeweils 3 Reihen mit jeweils 5 Kartenslots.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4588911009792
+    m_Localized: Das ist dein Ablagestapel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4702287241216
+    m_Localized: Und das ist dein Nachziehstapel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4902808526848
+    m_Localized: Deine Gegner:innen haben ebenfalls jeweils einen Ablage- und einen
+      Nachziehstapel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5143200866304
+    m_Localized: "Vor dem Spiel wird ein vollst\xE4ndiges 4-Farben-Deck gemischt
+      und anschlie\xDFend in zwei gleich gro\xDFe H\xE4lften geteilt. Dadurch steht
+      jeder spielenden Person jeweils nur die H\xE4lfte des gesamten Kartendecks
+      zur Verf\xFCgung."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5371631050752
+    m_Localized: "In jedem Zug k\xF6nnen 0 bis 4 Karten aus der eigenen Hand gespielt
+      werden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5456712507392
+    m_Localized: Lege die Karten auf die eigenen Kartenslots.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5667375620096
+    m_Localized: "Versuche, Poker-Kombinationen zu bilden. Nur vollst\xE4ndige Kombinationen
+      bringen Punkte."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5771453079552
+    m_Localized: "Kombinationen z\xE4hlen nur, wenn sie waagerecht in einer Reihe
+      auf den eigenen Kartenslots liegen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5818286678016
+    m_Localized: "Karten k\xF6nnen von den Gegner:innen gestohlen werden, indem die
+      eigene gelegte Karte dasselbe Kartensymbol besitzt wie die Karte des Gegners.
+      Das geht nur in der Reihe, die parallel zur eigenen liegt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5864709234688
+    m_Localized: Alle Karten, die am Ende des Zuges nicht ausgespielt wurden, sowie
+      alle gestohlenen Karten werden auf den eigenen Ablagestapel gelegt.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

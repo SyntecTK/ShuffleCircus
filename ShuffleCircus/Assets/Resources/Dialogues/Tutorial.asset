@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3439ffb6ced7a948a8dbd34742641f0, type: 3}
+  m_Name: Tutorial
+  m_EditorClassIdentifier: Assembly-CSharp::Dialogue
+  tableCollectionName: Tutorial_Dialogue
+  keyPrefix: Tutorial_Dialogue
+  lines:
+  - localizationKey: 1
+    characterPortrait: {fileID: 21300000, guid: 3c553ccd6b97ad34f89b22c4022170ad, type: 3}
+  - localizationKey: 2
+    characterPortrait: {fileID: 0}
+  - localizationKey: 3
+    characterPortrait: {fileID: 0}
+  - localizationKey: 4
+    characterPortrait: {fileID: 0}
+  - localizationKey: 5
+    characterPortrait: {fileID: 0}
+  - localizationKey: 6
+    characterPortrait: {fileID: 0}
+  - localizationKey: 7
+    characterPortrait: {fileID: 0}
+  - localizationKey: 8
+    characterPortrait: {fileID: 0}
+  - localizationKey: 9
+    characterPortrait: {fileID: 0}
+  - localizationKey: 10
+    characterPortrait: {fileID: 0}
+  - localizationKey: 11
+    characterPortrait: {fileID: 0}
+  - localizationKey: 12
+    characterPortrait: {fileID: 0}
+  - localizationKey: 13
+    characterPortrait: {fileID: 0}
+  - localizationKey: 14
+    characterPortrait: {fileID: 0}

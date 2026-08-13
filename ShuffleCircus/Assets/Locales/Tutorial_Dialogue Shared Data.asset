@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Tutorial_Dialogue Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Tutorial_Dialogue
+  m_TableCollectionNameGuidString: 37b25b16a7f8ebd4587edf573bbd7769
+  m_Entries:
+  - m_Id: 26544250880
+    m_Key: Tutorial_Dialogue_01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3170703581184
+    m_Key: Tutorial_Dialogue_02
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1220310278144
+    m_Key: Tutorial_Dialogue_03
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4007614029824
+    m_Key: Tutorial_Dialogue_04
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4588911009792
+    m_Key: Tutorial_Dialogue_05
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4702287241216
+    m_Key: Tutorial_Dialogue_06
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4902808526848
+    m_Key: Tutorial_Dialogue_07
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5143200866304
+    m_Key: Tutorial_Dialogue_08
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5371631050752
+    m_Key: Tutorial_Dialogue_09
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5456712507392
+    m_Key: Tutorial_Dialogue_10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5667375620096
+    m_Key: Tutorial_Dialogue_11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5771453079552
+    m_Key: Tutorial_Dialogue_12
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5818286678016
+    m_Key: Tutorial_Dialogue_13
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5864709234688
+    m_Key: Tutorial_Dialogue_14
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6797412084600799503
+  references:
+    version: 2
+    RefIds:
+    - rid: 6797412084600799503
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1786621991096
