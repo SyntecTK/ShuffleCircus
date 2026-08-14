@@ -5,4 +5,5 @@ public class DialogueLine
 {
     public string localizationKey;
     public Sprite characterPortrait;
+    public Sprite tutorialImage;
 }
