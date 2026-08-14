@@ -23,17 +23,23 @@ public class IntroDirector : MonoBehaviour
         EventManager.TutorialOver -= OnTutorialOver;
     }
 
-    private void OnTutorialOver()
-    {
-        SceneLoader.Instance.LoadScene("GameBoard");
-    }
-
     void Start()
     {
         dialogue = Resources.Load<Dialogue>("Dialogues/Tutorial");
         DialogueManager.Instance.SetDialogueUI(dialogueContainer, dialogueText, characterPortrait, tutorialImage);
         DialogueManager.Instance.StartDialogue(dialogue);
     }
+    //-------------------------------------------------------------------------------------
+    private void OnTutorialOver()
+    {
+        SceneLoader.Instance.LoadScene("GameBoard");
+    }
+
+    public void SkipTutorial()
+    {
+        EventManager.TutorialCompleted();
+    }
+
 
 
 
