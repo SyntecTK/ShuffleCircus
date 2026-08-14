@@ -93,6 +93,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         if (currentLineIndex >= currentDialogue.lines.Count)
         {
+            EventManager.TutorialCompleted();
             EndDialogue();
             return;
         }

@@ -13,6 +13,7 @@ public class BoardUI : MonoBehaviour
     [SerializeField] private GameObject _resultScreen;
     [SerializeField] private GameObject _cheatSheet;
     [SerializeField] private RectTransform _cheatSheetContent;
+    [SerializeField] private GameObject _pauseMenu;
 
     [Header("TextFields")]
     [SerializeField] private TMP_Text _playerScoreText;
@@ -37,12 +38,12 @@ public class BoardUI : MonoBehaviour
         UpdateBoardUI();
     }
 
-
     private void OnEnable()
     {
         EventManager.OnBoardChanged += UpdateBoardUI;
         EventManager.OnTurnEnded += UpdateBoardUI;
         EventManager.OnGameOver += ShowResultScreen;
+        EventManager.OnPause += ShowPauseMenu;
     }
 
     private void OnDisable()
@@ -50,6 +51,7 @@ public class BoardUI : MonoBehaviour
         EventManager.OnBoardChanged -= UpdateBoardUI;
         EventManager.OnTurnEnded -= UpdateBoardUI;
         EventManager.OnGameOver -= ShowResultScreen;
+        EventManager.OnPause -= ShowPauseMenu;
     }
 
     private void ShowResultScreen()
@@ -57,6 +59,24 @@ public class BoardUI : MonoBehaviour
         _resultScreen.SetActive(true);
         bool playerisWinner = ScoringSystem.CalculateTotalScore(_playerBoard) > ScoringSystem.CalculateTotalScore(_enemyBoard);
         _resultScreen.GetComponent<ResultScreen>().SetWinner(playerisWinner);
+    }
+
+    private void ShowPauseMenu()
+    {
+        Time.timeScale = 0;
+        _pauseMenu.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        Time.timeScale = 1;
+        SceneLoader.Instance.LoadScene("MainMenu");
+    }
+
+    public void ReturnToGame()
+    {
+        Time.timeScale = 1;
+        _pauseMenu.SetActive(false);
     }
 
     public void UpdateBoardUI()

@@ -9,8 +9,11 @@ public static class EventManager
     public static event Action OnGameOver;
     public static event Action OnHandDrawStarted;
     public static event Action OnDrawnHand;
-
+    public static event Action OnPause;
     public static event Action OnCardStolen;
+
+    //DELETE LATER
+    public static event Action TutorialOver;
 
     //----------Artifacts-----------------
     public static event Action OnAddedArtifact;
@@ -49,6 +52,16 @@ public static class EventManager
     public static void CardStolen()
     {
         OnCardStolen?.Invoke();
+    }
+
+    public static void Pause()
+    {
+        OnPause?.Invoke();
+    }
+
+    public static void TutorialCompleted()
+    {
+        TutorialOver?.Invoke();
     }
 
     //--------- Artifact Methods----------
