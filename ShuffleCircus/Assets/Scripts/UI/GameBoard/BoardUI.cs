@@ -64,6 +64,11 @@ public class BoardUI : MonoBehaviour
     private void ShowPauseMenu()
     {
         Time.timeScale = 0;
+        if(_pauseMenu.activeSelf)
+        {
+            _pauseMenu.SetActive(false);
+            return;
+        }
         _pauseMenu.SetActive(true);
     }
 
