@@ -13,14 +13,17 @@ public class DialogueManager : Singleton<DialogueManager>
     [SerializeField, ReadOnly] private StringTable currentStringTable;
     private int currentLineIndex;
 
-    [Header("UI Elements")]
-    [SerializeField] private GameObject _dialogueContainer;
-    [SerializeField] private Image _tutorialImage;
+    private GameObject _dialogueContainer;
+    private TMP_Text _dialogueText;
+    private Image _characterPortrait;
+    private Image _tutorialImage;
 
     [Header("Tutorial Image Animation")]
-    [SerializeField] private Vector2 _dialogueContainerDownOffset = new Vector2(0f, -150f);
+    [SerializeField] private Vector2 _dialogueContainerDownOffset = new Vector2(0f, -170f);
     [SerializeField] private float _tutorialAnimationDuration = 0.4f;
     [SerializeField] private AnimationCurve _tutorialAnimationCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    [SerializeField] private float _tutorialImageStartScale = 0.01f;
+    [SerializeField] private float _tutorialImageTargetScale = 2.5f;
 
     private RectTransform _dialogueContainerRect;
     private RectTransform _tutorialImageRect;
@@ -30,24 +33,11 @@ public class DialogueManager : Singleton<DialogueManager>
     private Coroutine _tutorialAnimationCoroutine;
 
     //Will be set by the scene
-    private TMP_Text dialogueText;
-    private Image characterPortrait;
 
     //-------------------------------------------------------------------------------------
     protected override void Awake()
     {
         base.Awake();
-
-        _dialogueContainerRect = _dialogueContainer.GetComponent<RectTransform>();
-        _dialogueContainerDefaultPos = _dialogueContainerRect.anchoredPosition;
-
-        _tutorialImageRect = _tutorialImage.rectTransform;
-        _tutorialImageSmallScale = _tutorialImageRect.localScale;
-
-        _tutorialImage.gameObject.SetActive(false);
-        Color c = _tutorialImage.color;
-        c.a = 0f;
-        _tutorialImage.color = c;
     }
 
     private void OnEnable()
@@ -70,10 +60,16 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
     //-------------------------------------------------------------------------------------
-    public void SetDialogueUI(TMP_Text dialogueText, Image characterPortrait)
+    public void SetDialogueUI(GameObject dialogueContainer, TMP_Text dialogueText, Image characterPortrait, Image tutorialImage)
     {
-        this.dialogueText = dialogueText;
-        this.characterPortrait = characterPortrait;
+        _dialogueContainer = dialogueContainer;
+        _dialogueText = dialogueText;
+        _characterPortrait = characterPortrait;
+        _tutorialImage = tutorialImage;
+        _tutorialImageRect = tutorialImage.GetComponent<RectTransform>();
+        _dialogueContainerRect = dialogueContainer.GetComponent<RectTransform>();
+        _dialogueContainerDefaultPos = _dialogueContainerRect.anchoredPosition;
+        _tutorialImageSmallScale = Vector3.one * _tutorialImageStartScale;
     }
 
     public void StartDialogue(Dialogue dialogue)
@@ -87,6 +83,14 @@ public class DialogueManager : Singleton<DialogueManager>
     private void AdvanceLine()
     {
         currentLineIndex++;
+
+        DialogueLine currentLine = currentDialogue.lines[currentLineIndex - 1];
+
+        if(currentLine.tutorialImage != null)
+        {
+            UpdateTutorialImage(currentLine.tutorialImage);
+        }
+
         if (currentLineIndex >= currentDialogue.lines.Count)
         {
             EndDialogue();
@@ -99,7 +103,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         currentDialogue = null;
         currentStringTable = null;
-        dialogueText.text = string.Empty;
+        _dialogueText.text = string.Empty;
         UpdateTutorialImage(null);
     }
 
@@ -113,10 +117,10 @@ public class DialogueManager : Singleton<DialogueManager>
     private void DisplayCurrentLine()
     {
         string key = $"{currentDialogue.keyPrefix}_{currentLineIndex + 1:00}";
-        dialogueText.text = LocalizationSettings.StringDatabase.GetLocalizedString(currentDialogue.tableCollectionName, key);
+        _dialogueText.text = LocalizationSettings.StringDatabase.GetLocalizedString(currentDialogue.tableCollectionName, key);
 
         DialogueLine line = currentDialogue.lines[currentLineIndex];
-        if (line.characterPortrait != null) characterPortrait.sprite = line.characterPortrait;
+        if (line.characterPortrait != null) _characterPortrait.sprite = line.characterPortrait;
 
         UpdateTutorialImage(line.tutorialImage);
     }
@@ -166,7 +170,7 @@ public class DialogueManager : Singleton<DialogueManager>
             float progress = _tutorialAnimationCurve.Evaluate(Mathf.Clamp01(t / _tutorialAnimationDuration));
 
             _dialogueContainerRect.anchoredPosition = Vector2.LerpUnclamped(containerFrom, containerTo, progress);
-            _tutorialImageRect.localScale = Vector3.LerpUnclamped(_tutorialImageSmallScale, Vector3.one, progress);
+            _tutorialImageRect.localScale = Vector3.LerpUnclamped(_tutorialImageSmallScale, Vector3.one * _tutorialImageTargetScale, progress);
             color.a = progress;
             _tutorialImage.color = color;
 
@@ -174,7 +178,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
 
         _dialogueContainerRect.anchoredPosition = containerTo;
-        _tutorialImageRect.localScale = Vector3.one;
+        _tutorialImageRect.localScale = Vector3.one * _tutorialImageTargetScale;
         color.a = 1f;
         _tutorialImage.color = color;
 

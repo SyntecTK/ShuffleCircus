@@ -12,7 +12,6 @@ public class Eventfield : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private GameObject tentProgressUI;
     private Image[] tentProgressSteps;
     private GameObject stepsContainer;
-    private int currentProgressStep = 0;
 
 
     private void Start()
