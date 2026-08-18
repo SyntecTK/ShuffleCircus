@@ -20,11 +20,11 @@ public class DialogueManager : Singleton<DialogueManager>
     private Image _tutorialImage;
 
     [Header("Tutorial Image Animation")]
-    [SerializeField] private Vector2 _dialogueContainerDownOffset = new Vector2(0f, -200f);
+    [SerializeField] private Vector2 _dialogueContainerDownOffset = new Vector2(0f, -400f);
     [SerializeField] private float _tutorialAnimationDuration = 0.4f;
     [SerializeField] private AnimationCurve _tutorialAnimationCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private float _tutorialImageStartScale = 0.01f;
-    [SerializeField] private float _tutorialImageTargetScale = 3f;
+    [SerializeField] private float _tutorialImageTargetScale = 5f;
 
     private RectTransform _dialogueContainerRect;
     private RectTransform _tutorialImageRect;
@@ -57,7 +57,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if(SceneManager.GetActiveScene().name == "Intro")
+            if (SceneManager.GetActiveScene().name == "Intro")
             {
                 AdvanceLine();
             }
@@ -90,7 +90,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         DialogueLine currentLine = currentDialogue.lines[currentLineIndex - 1];
 
-        if(currentLine.tutorialImage != null)
+        if (currentLine.tutorialImage != null)
         {
             UpdateTutorialImage(currentLine.tutorialImage);
         }
