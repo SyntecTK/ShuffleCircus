@@ -20,7 +20,7 @@ public class DialogueManager : Singleton<DialogueManager>
     private Image _tutorialImage;
 
     [Header("Tutorial Image Animation")]
-    [SerializeField] private Vector2 _dialogueContainerDownOffset = new Vector2(0f, -400f);
+    [SerializeField] private Vector2 _dialogueContainerDownOffset = new Vector2(0f, -300f);
     [SerializeField] private float _tutorialAnimationDuration = 0.4f;
     [SerializeField] private AnimationCurve _tutorialAnimationCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private float _tutorialImageStartScale = 0.01f;

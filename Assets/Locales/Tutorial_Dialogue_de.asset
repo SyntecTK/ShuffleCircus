@@ -23,8 +23,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1220310278144
-    m_Localized: "Du wirst gleich drei Runden spielen und am Ende jeder Runde Artefakte
-      sammeln, um immer mehr Punkte machen zu k\xF6nnen."
+    m_Localized: "Shuffle Circus ist ein Kartenspiel bei dem du Pokerh\xE4nde legen
+      musst um Punkte zu sammeln."
     m_Metadata:
       m_Items: []
   - m_Id: 3170703581184
@@ -83,6 +83,30 @@ MonoBehaviour:
   - m_Id: 5864709234688
     m_Localized: Alle Karten, die am Ende des Zuges nicht ausgespielt wurden, sowie
       alle gestohlenen Karten werden auf den eigenen Ablagestapel gelegt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2556735323099136
+    m_Localized: "Es werden drei Runden gegen immer st\xE4rker werdende Gegner gespielt.
+      Am Ende jeder Runde erh\xE4lst du ein Artefakt, welches die Regeln leicht ver\xE4ndert
+      und dir erm\xF6glicht, noch mehr Punkte zu bekommen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2558024417267712
+    m_Localized: "Jetzt erkl\xE4re ich dir noch schnell den Aufbau des Spielbretts."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2558893141512192
+    m_Localized: "Aber aufpassen! Deine Karten k\xF6nnen auch gestohlen werden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2559037299740672
+    m_Localized: "Hast du keine Karten mehr wird der Ablagestapel zur\xFCck in dein
+      Deck gemischt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2559606030585856
+    m_Localized: "So, das war's auch schon. Tritt nun ein und viel spa\xDF in unserem
+      Shuffle Circus!!"
     m_Metadata:
       m_Items: []
   references:

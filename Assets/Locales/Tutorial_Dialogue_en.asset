@@ -23,8 +23,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1220310278144
-    m_Localized: You are about to play three rounds and will get an artifact after
-      each one. These will make you able to get even more points.
+    m_Localized: Shuffle Circus is a card game where you play pokerhands to score
+      points.
     m_Metadata:
       m_Items: []
   - m_Id: 4007614029824
@@ -41,6 +41,66 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4702287241216
     m_Localized: And this is your draw pile.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5143200866304
+    m_Localized: Before the game starts a normal four color deck will be shuffled
+      and split between you and your opponent. That means that every player has only
+      half a deck. Exciting!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2556735323099136
+    m_Localized: You play three rounds against increasingly stronger opponents. At
+      the end of each round, you receive an artifact that slightly changes the rules
+      and allows you to score even more points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2558024417267712
+    m_Localized: Now let's take a look at the gameboard!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4902808526848
+    m_Localized: Your opponent also has one of each.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5371631050752
+    m_Localized: You may play up to four cards each turn.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5456712507392
+    m_Localized: Place these cards on your cardslots!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5667375620096
+    m_Localized: Try to build pokerhands. But only complete hands earn you points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5771453079552
+    m_Localized: They also only count if they are on the same row.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5818286678016
+    m_Localized: Cards can be stolen from your opponent if your played card has the
+      same symbol as theirs. This only works in the row directly opposite yours.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2558893141512192
+    m_Localized: But beware! You cards can be stolen too.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5864709234688
+    m_Localized: Cards you didn't play and stolen cards get placed in your discard
+      pile at the end of your turn.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2559037299740672
+    m_Localized: If you run out of cards, your discard pile is shuffled back into
+      your deck.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2559606030585856
+    m_Localized: Thems the rules! You can now enter the amazing Shuffle Circus. Have
+      fun!
     m_Metadata:
       m_Items: []
   references:

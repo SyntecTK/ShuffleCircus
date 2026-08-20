@@ -27,48 +27,68 @@ MonoBehaviour:
     m_Key: Tutorial_Dialogue_03
     m_Metadata:
       m_Items: []
-  - m_Id: 4007614029824
+  - m_Id: 5143200866304
     m_Key: Tutorial_Dialogue_04
     m_Metadata:
       m_Items: []
-  - m_Id: 4588911009792
+  - m_Id: 2556735323099136
     m_Key: Tutorial_Dialogue_05
     m_Metadata:
       m_Items: []
-  - m_Id: 4702287241216
+  - m_Id: 2558024417267712
     m_Key: Tutorial_Dialogue_06
     m_Metadata:
       m_Items: []
-  - m_Id: 4902808526848
+  - m_Id: 4007614029824
     m_Key: Tutorial_Dialogue_07
     m_Metadata:
       m_Items: []
-  - m_Id: 5143200866304
+  - m_Id: 4588911009792
     m_Key: Tutorial_Dialogue_08
     m_Metadata:
       m_Items: []
-  - m_Id: 5371631050752
+  - m_Id: 4702287241216
     m_Key: Tutorial_Dialogue_09
     m_Metadata:
       m_Items: []
-  - m_Id: 5456712507392
+  - m_Id: 4902808526848
     m_Key: Tutorial_Dialogue_10
     m_Metadata:
       m_Items: []
-  - m_Id: 5667375620096
+  - m_Id: 5371631050752
     m_Key: Tutorial_Dialogue_11
     m_Metadata:
       m_Items: []
-  - m_Id: 5771453079552
+  - m_Id: 5456712507392
     m_Key: Tutorial_Dialogue_12
     m_Metadata:
       m_Items: []
-  - m_Id: 5818286678016
+  - m_Id: 5667375620096
     m_Key: Tutorial_Dialogue_13
     m_Metadata:
       m_Items: []
-  - m_Id: 5864709234688
+  - m_Id: 5771453079552
     m_Key: Tutorial_Dialogue_14
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5818286678016
+    m_Key: Tutorial_Dialogue_15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2558893141512192
+    m_Key: Tutorial_Dialogue_16
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5864709234688
+    m_Key: Tutorial_Dialogue_17
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2559037299740672
+    m_Key: Tutorial_Dialogue_18
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2559606030585856
+    m_Key: Tutorial_Dialogue_19
     m_Metadata:
       m_Items: []
   m_Metadata:
