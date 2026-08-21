@@ -50,9 +50,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5143200866304
     m_Localized: "Vor dem Spiel wird ein vollst\xE4ndiges 4-Farben-Deck gemischt
-      und anschlie\xDFend in zwei gleich gro\xDFe H\xE4lften geteilt. Dadurch steht
-      jeder spielenden Person jeweils nur die H\xE4lfte des gesamten Kartendecks
-      zur Verf\xFCgung."
+      und in zwei gleich gro\xDFe H\xE4lften geteilt. Jede Person erh\xE4lt eine
+      H\xE4lfte des Decks."
     m_Metadata:
       m_Items: []
   - m_Id: 5371631050752
@@ -82,13 +81,13 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5864709234688
     m_Localized: Alle Karten, die am Ende des Zuges nicht ausgespielt wurden, sowie
-      alle gestohlenen Karten werden auf den eigenen Ablagestapel gelegt.
+      alle gestohlenen Karten werden in den eigenen Ablagestapel gelegt.
     m_Metadata:
       m_Items: []
   - m_Id: 2556735323099136
-    m_Localized: "Es werden drei Runden gegen immer st\xE4rker werdende Gegner gespielt.
-      Am Ende jeder Runde erh\xE4lst du ein Artefakt, welches die Regeln leicht ver\xE4ndert
-      und dir erm\xF6glicht, noch mehr Punkte zu bekommen."
+    m_Localized: "Es werden drei Runden gegen immer st\xE4rkere Gegner gespielt.
+      Nach jeder Runde erh\xE4ltst du ein Artefakt, das die Regeln ver\xE4ndert und
+      dir zus\xE4tzliche Punkte erm\xF6glicht."
     m_Metadata:
       m_Items: []
   - m_Id: 2558024417267712
@@ -100,8 +99,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2559037299740672
-    m_Localized: "Hast du keine Karten mehr wird der Ablagestapel zur\xFCck in dein
-      Deck gemischt."
+    m_Localized: "Hast du keine Karten mehr wird der Ablagestapel zur\xFCck in deinen
+      Nachziehstapel gemischt."
     m_Metadata:
       m_Items: []
   - m_Id: 2559606030585856

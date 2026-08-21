@@ -46,7 +46,7 @@ MonoBehaviour:
   - m_Id: 5143200866304
     m_Localized: Before the game starts a normal four color deck will be shuffled
       and split between you and your opponent. That means that every player has only
-      half a deck. Exciting!
+      half a deck.
     m_Metadata:
       m_Items: []
   - m_Id: 2556735323099136
