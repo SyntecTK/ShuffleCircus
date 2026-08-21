@@ -1105,6 +1105,7 @@ GameObject:
   - component: {fileID: 236117278}
   - component: {fileID: 236117277}
   - component: {fileID: 236117279}
+  - component: {fileID: 236117280}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1181,6 +1182,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef421f8b65b9eba4687ae36c70809e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactSlot
+--- !u!114 &236117280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236117275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e83ad25e2d6624789059ed3b2100e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PulseScale
+  minScale: 0.92
+  pulseSpeed: 2.61
+  phaseOffset: 0
 --- !u!1001 &243912538
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1389,6 +1405,81 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5391068853445818174, guid: 86d139e160b67324387f3e7c6ad13cd8, type: 3}
   m_PrefabInstance: {fileID: 294978789}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &303954322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 303954323}
+  - component: {fileID: 303954325}
+  - component: {fileID: 303954324}
+  m_Layer: 5
+  m_Name: LoseImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &303954323
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303954322}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1708076245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 15.252991}
+  m_SizeDelta: {x: 358.797, y: 440.81}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &303954324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303954322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 27d47fc1f0d876f4da9d73731630b8b4, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &303954325
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303954322}
+  m_CullTransparentMesh: 1
 --- !u!1 &313508476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1873,7 @@ GameObject:
   - component: {fileID: 370773399}
   - component: {fileID: 370773398}
   - component: {fileID: 370773400}
+  - component: {fileID: 370773401}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1858,6 +1950,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef421f8b65b9eba4687ae36c70809e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactSlot
+--- !u!114 &370773401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370773396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e83ad25e2d6624789059ed3b2100e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PulseScale
+  minScale: 0.92
+  pulseSpeed: 2.2
+  phaseOffset: 0
 --- !u!1 &372268344
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,6 +2751,7 @@ GameObject:
   - component: {fileID: 590904968}
   - component: {fileID: 590904967}
   - component: {fileID: 590904969}
+  - component: {fileID: 590904970}
   m_Layer: 5
   m_Name: Image (2)
   m_TagString: Untagged
@@ -2720,6 +2828,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef421f8b65b9eba4687ae36c70809e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactSlot
+--- !u!114 &590904970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590904965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e83ad25e2d6624789059ed3b2100e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PulseScale
+  minScale: 0.92
+  pulseSpeed: 2.2
+  phaseOffset: 0.7
 --- !u!1 &611494900
 GameObject:
   m_ObjectHideFlags: 0
@@ -3733,9 +3856,6 @@ MonoBehaviour:
   - {fileID: 236117277}
   - {fileID: 1622432653}
   - {fileID: 590904967}
-  emptySlotMinScale: 0.8
-  emptySlotPulseSpeed: 2
-  slotPhaseOffset: 0.35
 --- !u!1001 &750669113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4882,6 +5002,7 @@ GameObject:
   - component: {fileID: 891355773}
   - component: {fileID: 891355772}
   - component: {fileID: 891355774}
+  - component: {fileID: 891355775}
   m_Layer: 5
   m_Name: Image (2)
   m_TagString: Untagged
@@ -4958,6 +5079,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef421f8b65b9eba4687ae36c70809e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactSlot
+--- !u!114 &891355775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891355770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e83ad25e2d6624789059ed3b2100e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PulseScale
+  minScale: 0.92
+  pulseSpeed: 2.2
+  phaseOffset: 0.7
 --- !u!1 &894349981
 GameObject:
   m_ObjectHideFlags: 0
@@ -5879,6 +6015,7 @@ GameObject:
   - component: {fileID: 1082032077}
   - component: {fileID: 1082032076}
   - component: {fileID: 1082032078}
+  - component: {fileID: 1082032079}
   m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
@@ -5955,6 +6092,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef421f8b65b9eba4687ae36c70809e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactSlot
+--- !u!114 &1082032079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082032074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e83ad25e2d6624789059ed3b2100e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PulseScale
+  minScale: 0.92
+  pulseSpeed: 2.2
+  phaseOffset: 0.35
 --- !u!1 &1091604244
 GameObject:
   m_ObjectHideFlags: 0
@@ -9306,6 +9458,7 @@ GameObject:
   - component: {fileID: 1622432654}
   - component: {fileID: 1622432653}
   - component: {fileID: 1622432655}
+  - component: {fileID: 1622432656}
   m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
@@ -9382,6 +9535,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef421f8b65b9eba4687ae36c70809e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactSlot
+--- !u!114 &1622432656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622432651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e83ad25e2d6624789059ed3b2100e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PulseScale
+  minScale: 0.92
+  pulseSpeed: 2.2
+  phaseOffset: 0.35
 --- !u!1 &1626110676
 GameObject:
   m_ObjectHideFlags: 0
@@ -10306,6 +10474,7 @@ RectTransform:
   - {fileID: 2043042444}
   - {fileID: 487192284}
   - {fileID: 191730047}
+  - {fileID: 303954323}
   m_Father: {fileID: 1268469638}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -11307,9 +11476,6 @@ MonoBehaviour:
   - {fileID: 370773398}
   - {fileID: 1082032076}
   - {fileID: 891355772}
-  emptySlotMinScale: 0.8
-  emptySlotPulseSpeed: 2
-  slotPhaseOffset: 0.35
 --- !u!1 &1956848349
 GameObject:
   m_ObjectHideFlags: 0
@@ -11926,6 +12092,7 @@ MonoBehaviour:
   winText: {fileID: 1244240820}
   rewardText: {fileID: 2043042445}
   nextButton: {fileID: 1227935273}
+  loseImage: {fileID: 303954322}
   resultPanel: {fileID: 1268469638}
   _uiContainer: {fileID: 1708076244}
   selectionContainer: {fileID: 487192283}

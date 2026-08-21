@@ -13,6 +13,7 @@ public class ResultScreen : MonoBehaviour
     [SerializeField] private TMP_Text winText;
     [SerializeField] private TMP_Text rewardText;
     [SerializeField] private Button nextButton;
+    [SerializeField] private GameObject loseImage;
     //[SerializeField] private Button mapButton;
 
     [Header("Minimizing")]
@@ -177,6 +178,7 @@ public class ResultScreen : MonoBehaviour
             winText.text = "You Lose!";
             nextButton.GetComponentInChildren<TMP_Text>().text = "Retry";
             nextButton.onClick.AddListener(RetryGame);
+            loseImage.SetActive(true);
             
         }
     }

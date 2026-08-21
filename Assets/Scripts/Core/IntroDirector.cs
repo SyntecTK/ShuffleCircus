@@ -3,6 +3,8 @@ using TMPro;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 public class IntroDirector : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class IntroDirector : MonoBehaviour
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private Image characterPortrait;
     [SerializeField] private Image tutorialImage;
+
+    [SerializeField] private GameObject languageSelectionContainer;
+    [SerializeField] private GameObject skipTutorialButton;
 
     private Dialogue dialogue;
 
@@ -38,6 +43,30 @@ public class IntroDirector : MonoBehaviour
     public void SkipTutorial()
     {
         EventManager.TutorialCompleted();
+    }
+
+    public void ChooseGerman()
+    {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier("de"));
+        EnterTutorial();
+    }
+
+    public void ChooseEnglish()
+    {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier("en"));
+        EnterTutorial();
+    }
+
+    private void EnterTutorial()
+    {
+        languageSelectionContainer.SetActive(false);
+        dialogueContainer.SetActive(true);
+        skipTutorialButton.SetActive(true);
+    }
+
+    public void NextLine()
+    {
+        DialogueManager.Instance.AdvanceLine();
     }
 
 

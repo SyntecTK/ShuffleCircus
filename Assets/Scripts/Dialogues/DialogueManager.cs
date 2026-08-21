@@ -54,14 +54,6 @@ public class DialogueManager : Singleton<DialogueManager>
     private void Update()
     {
         if (currentDialogue == null) return;
-
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            if (SceneManager.GetActiveScene().name == "Intro")
-            {
-                AdvanceLine();
-            }
-        }
     }
     //-------------------------------------------------------------------------------------
     public void SetDialogueUI(GameObject dialogueContainer, TMP_Text dialogueText, Image characterPortrait, Image tutorialImage)
@@ -84,7 +76,7 @@ public class DialogueManager : Singleton<DialogueManager>
         DisplayCurrentLine();
     }
 
-    private void AdvanceLine()
+    public void AdvanceLine()
     {
         currentLineIndex++;
 
