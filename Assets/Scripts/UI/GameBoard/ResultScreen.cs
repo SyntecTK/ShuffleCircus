@@ -143,7 +143,7 @@ public class ResultScreen : MonoBehaviour
         _isAdvancingToNextGame = false;
         nextButton.interactable = true;
         bool isFinalBattle = GameManager.Instance != null &&
-            GameManager.Instance.CurrentBattleCount >= GameManager.Instance.MaxBattlesAllowed;
+            GameManager.Instance.CurrentBattleCount > GameManager.Instance.MaxBattlesAllowed;
 
         nextButton.onClick.RemoveAllListeners();
 
