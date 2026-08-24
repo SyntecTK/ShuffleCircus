@@ -143,7 +143,7 @@ public class ResultScreen : MonoBehaviour
         _isAdvancingToNextGame = false;
         nextButton.interactable = true;
         bool isFinalBattle = GameManager.Instance != null &&
-            GameManager.Instance.CurrentBattleCount > GameManager.Instance.MaxBattlesAllowed;
+            GameManager.Instance.CurrentBattleCount + 1 >= GameManager.Instance.MaxBattlesAllowed;
 
         nextButton.onClick.RemoveAllListeners();
 
@@ -162,7 +162,7 @@ public class ResultScreen : MonoBehaviour
             FillArtifactSelections();
             GameManager.Instance.IncreaseTentProgress(GameManager.Instance.SelectedEventFieldID);
             winText.text = "You Win!";
-            if (GameManager.Instance == null || GameManager.Instance.CurrentBattleCount < GameManager.Instance.MaxBattlesAllowed)
+            if (GameManager.Instance == null || GameManager.Instance.CurrentBattleCount + 1 < GameManager.Instance.MaxBattlesAllowed)
             {
                 nextButton.GetComponentInChildren<TMP_Text>().text = "Next Game";
                 nextButton.onClick.AddListener(StartNextGame);

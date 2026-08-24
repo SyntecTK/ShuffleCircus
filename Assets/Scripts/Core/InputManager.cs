@@ -54,7 +54,6 @@ public class InputManager : Singleton<InputManager>
             EventManager.BoardChanged();
         }
     }
-
     private void OnExit()
     {
         EventManager.Pause();

@@ -27,7 +27,7 @@ public class MainMenuHandler : MonoBehaviour
 
     public void OpenDiscord()
     {
-        Application.OpenURL("https://discord.gg/WMEX29QcE");
+        Application.OpenURL("https://discord.gg/UBJ3N57rW");
     }
 
     public void OpenFeedbackFormular()

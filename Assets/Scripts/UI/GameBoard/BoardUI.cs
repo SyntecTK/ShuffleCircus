@@ -14,6 +14,16 @@ public class BoardUI : MonoBehaviour
     [SerializeField] private GameObject _cheatSheet;
     [SerializeField] private RectTransform _cheatSheetContent;
     [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private GameObject _afkWarningScreen;
+    [SerializeField] private TMP_Text _afkWarningText;
+
+    private const float AfkIdleThreshold = 60f;
+    private const float AfkCountdownDuration = 10f;
+
+    private float _afkIdleTimer;
+    private float _afkCountdownTimer;
+    private bool _afkWarningActive;
+    private Vector2 _lastMousePosition;
 
     [Header("TextFields")]
     [SerializeField] private TMP_Text _playerScoreText;
@@ -36,6 +46,10 @@ public class BoardUI : MonoBehaviour
     private void Start()
     {
         UpdateBoardUI();
+        if (Mouse.current != null)
+        {
+            _lastMousePosition = Mouse.current.position.ReadValue();
+        }
     }
 
     private void OnEnable()
@@ -67,6 +81,7 @@ public class BoardUI : MonoBehaviour
         if(_pauseMenu.activeSelf)
         {
             _pauseMenu.SetActive(false);
+            Time.timeScale = 1;
             return;
         }
         _pauseMenu.SetActive(true);
@@ -158,6 +173,83 @@ public class BoardUI : MonoBehaviour
                 _cheatSheet.SetActive(false);
             }
         }
+
+        HandleAfkDetection();
+    }
+
+    private void HandleAfkDetection()
+    {
+        if (Mouse.current == null)
+        {
+            return;
+        }
+
+        Vector2 currentMousePosition = Mouse.current.position.ReadValue();
+        bool mouseActive = currentMousePosition != _lastMousePosition
+            || Mouse.current.leftButton.wasPressedThisFrame
+            || Mouse.current.rightButton.wasPressedThisFrame;
+        _lastMousePosition = currentMousePosition;
+
+        if (_afkWarningActive)
+        {
+            _afkCountdownTimer -= Time.unscaledDeltaTime;
+            UpdateAfkWarningText();
+            if (_afkCountdownTimer <= 0f)
+            {
+                ReturnToMenuFromAfk();
+            }
+            return;
+        }
+
+        bool blockedByOtherScreen = (_pauseMenu != null && _pauseMenu.activeSelf)
+            || (_resultScreen != null && _resultScreen.activeSelf)
+            || (_cheatSheet != null && _cheatSheet.activeSelf);
+
+        if (mouseActive || blockedByOtherScreen)
+        {
+            _afkIdleTimer = 0f;
+            return;
+        }
+
+        _afkIdleTimer += Time.unscaledDeltaTime;
+        if (_afkIdleTimer >= AfkIdleThreshold)
+        {
+            ShowAfkWarning();
+        }
+    }
+
+    private void ShowAfkWarning()
+    {
+        _afkWarningActive = true;
+        _afkCountdownTimer = AfkCountdownDuration;
+        UpdateAfkWarningText();
+        _afkWarningScreen.SetActive(true);
+    }
+
+    private void UpdateAfkWarningText()
+    {
+        int secondsLeft = Mathf.CeilToInt(Mathf.Max(_afkCountdownTimer, 0f));
+        _afkWarningText.text = $"AFK warning! Returning to main menu in {secondsLeft}s";
+    }
+
+    public void CancelAfkWarning()
+    {
+        _afkWarningActive = false;
+        _afkIdleTimer = 0f;
+        _afkCountdownTimer = 0f;
+        _afkWarningScreen.SetActive(false);
+    }
+
+    public void PauseGame()
+    {
+        EventManager.Pause();
+    }
+
+    private void ReturnToMenuFromAfk()
+    {
+        _afkWarningActive = false;
+        _afkWarningScreen.SetActive(false);
+        SceneLoader.Instance.LoadScene("MainMenu");
     }
 
     private bool IsPointerOverCheatSheetContent()
